@@ -17,7 +17,7 @@ class CoronaTrackerApi {
   Future<LocationsResponse> getLocations() async {
     try {
       var dio = makeDio();
-      var response = await dio.get(URL + "/locations");
+      var response = await dio.get(URL + "/v2/locations");
       dio.close();
       dio.clear();
       return LocationsResponse.fromJson(response.data);
@@ -30,7 +30,7 @@ class CoronaTrackerApi {
   Future<Location> getLocation({int id}) async {
     try {
       var dio = makeDio();
-      var response = await dio.get(URL + "/locations/$id");
+      var response = await dio.get(URL + "/v2/locations/$id");
       dio.close();
       dio.clear();
       if (response.data["location"] != null) {

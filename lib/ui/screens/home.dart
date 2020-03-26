@@ -20,11 +20,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(10.7622028, 106.6786009),
-    zoom: 20,
+    zoom: 1,
   );
 
   @override
   void initState() {
+    BlocProvider.of<HomeBloc>(context).add(HomeLoadLocationsEvent());
     BlocProvider.of<SettingsBloc>(context).listen((state) {
       if (state is SettingsUpdatedState) {
         if (!_controller.isCompleted) {
@@ -40,15 +41,44 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-        return GoogleMap(
-          initialCameraPosition: _cameraPosition,
-          myLocationEnabled: true,
-          mapToolbarEnabled: false,
-          compassEnabled: true,
-          onMapCreated: _onMapCreated,
-        );
-      }),
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          var circles = Set<Marker>();
+
+          if (state is HomeLoadedLocationsState) {
+            state.response.locations.map((location) {
+              circles.add(
+                Marker(
+                  markerId: MarkerId(location.id.toString()),
+                  position: LatLng(
+                    double.parse(location.coordinates.latitude),
+                    double.parse(location.coordinates.longitude),
+                  ),
+                ),
+              );
+            });
+          }
+
+          return Stack(
+            children: <Widget>[
+              GoogleMap(
+                initialCameraPosition: _cameraPosition,
+                markers: circles,
+                myLocationEnabled: true,
+                mapToolbarEnabled: false,
+                compassEnabled: true,
+                onMapCreated: _onMapCreated,
+              ),
+              state is HomeLoadingState
+                  ? Align(
+                      alignment: Alignment.topCenter,
+                      child: LinearProgressIndicator(),
+                    )
+                  : Container()
+            ],
+          );
+        },
+      ),
     );
   }
 
