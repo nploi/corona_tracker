@@ -44,7 +44,7 @@ packages:
     source: hosted
     version: "3.0.0"
   bloc_test:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: bloc_test
       url: "https://pub.dartlang.org"
@@ -152,7 +152,7 @@ packages:
     source: hosted
     version: "1.1.0"
   flutter_test:
-    dependency: "direct main"
+    dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -167,7 +167,7 @@ packages:
       name: fluttertoast
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.3"
+    version: "4.0.1"
   get_it:
     dependency: "direct main"
     description:
@@ -274,7 +274,7 @@ packages:
     source: hosted
     version: "0.9.6+3"
   mockito:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: mockito
       url: "https://pub.dartlang.org"

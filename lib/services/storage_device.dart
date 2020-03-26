@@ -1,7 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageDeviceService {
-  static const String settingsKey = "settings";
+  static const String SETTINGS = "settings";
 
   SharedPreferences _preferences;
 
