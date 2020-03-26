@@ -1,2 +1,2 @@
 export 'app_bloc_delegate.dart';
-//export 'some_files.dart';
+export 'settings/settings_bloc.dart';
