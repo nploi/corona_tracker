@@ -2,7 +2,7 @@ import 'package:corona_tracker/models/models.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group("Models TimeLines test", () {
+  group("Models LocationsResponse test", () {
     test("toJson method", () {
       var timeLine = TimeLine(latest: 0, timeline: {
         "2020-01-22T00:00:00Z": 0,
