@@ -8,6 +8,7 @@ dependencies:
   bloc: ^3.0.0
   cupertino_icons: ^0.1.3
   device_preview: ^0.3.0+1
+  dio: ^3.0.9
   equatable: ^1.1.1
   flutter:
     sdk: flutter

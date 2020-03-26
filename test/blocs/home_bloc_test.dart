@@ -25,7 +25,7 @@ void main() {
       'emits [HomeLoadingState(), HomeDidSomeThingState()]'
       'when successful',
       build: () async {
-        when(homeRepository.doSomeThing()).thenAnswer(
+        when(homeRepository.getLocations()).thenAnswer(
           (_) async => null, // Response mock
         );
         return homeBloc;
