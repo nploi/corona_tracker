@@ -1,4 +1,3 @@
-
 part of 'home_bloc.dart';
 
 @immutable
@@ -25,13 +24,28 @@ class HomeErrorState extends HomeState {
   String toString() => "HomeErrorState {message: $message}";
 }
 
-class HomeDidSomeThingState extends HomeState {
+class HomeLoadedLocationsState extends HomeState {
+  final LocationsResponse response;
 
-  const HomeDidSomeThingState();
-
-  @override
-  List<Object> get props => [];
+  const HomeLoadedLocationsState(this.response);
 
   @override
-  String toString() => "HomeDidSomeThingState {}";
+  List<Object> get props => [response];
+
+  @override
+  String toString() =>
+      "HomeLoadedLocationsState {response: ${response.toJson()}";
+}
+
+class HomeLoadedLocationState extends HomeState {
+  final Location location;
+
+  const HomeLoadedLocationState(this.location);
+
+  @override
+  List<Object> get props => [location];
+
+  @override
+  String toString() =>
+      "HomeLoadedLocationState {response: ${location.toJson()}";
 }
