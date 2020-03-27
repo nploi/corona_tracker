@@ -1,6 +1,6 @@
 class TimeLine {
   int latest;
-  Map<String, int> timeline;
+  Map<dynamic, dynamic> timeline;
 
   TimeLine({this.latest, this.timeline});
 

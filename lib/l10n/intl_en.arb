@@ -1,0 +1,7 @@
+{
+  "appName": "Corona Tracker",
+  "confirmedTitle": "Confirmed",
+  "deathsTitle": "Deaths",
+  "recoveredTitle": "Recovered",
+  "worldwide": "Worldwide"
+}
