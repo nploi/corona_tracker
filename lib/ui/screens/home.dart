@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:corona_tracker/blocs/blocs.dart';
 import 'package:corona_tracker/blocs/home/home_bloc.dart';
+import 'package:corona_tracker/models/locations_response.dart';
+import 'package:corona_tracker/ui/common/cluster_marker.dart';
 import 'package:corona_tracker/utils/map_styles/map_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     BlocProvider.of<HomeBloc>(context).add(HomeLoadLocationsEvent());
+    BlocProvider.of<HomeBloc>(context).listen((state) {});
     BlocProvider.of<SettingsBloc>(context).listen((state) {
       if (state is SettingsUpdatedState) {
         if (!_controller.isCompleted) {
@@ -43,32 +47,32 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          var circles = Set<Marker>();
+          var markers = BlocProvider.of<HomeBloc>(context).markers;
+          var response = LocationsResponse();
 
           if (state is HomeLoadedLocationsState) {
-            state.response.locations.map((location) {
-              circles.add(
-                Marker(
-                  markerId: MarkerId(location.id.toString()),
-                  position: LatLng(
-                    double.parse(location.coordinates.latitude),
-                    double.parse(location.coordinates.longitude),
-                  ),
-                ),
-              );
-            });
+            response = state.response;
           }
 
           return Stack(
             children: <Widget>[
               GoogleMap(
                 initialCameraPosition: _cameraPosition,
-                markers: circles,
+                markers: markers,
                 myLocationEnabled: true,
                 mapToolbarEnabled: false,
                 compassEnabled: true,
                 onMapCreated: _onMapCreated,
               ),
+//              ListView(
+//                children: response.locations == null
+//                    ? []
+//                    : response.locations.map((location) {
+//                        return ListTile(
+//                          title: Text(location.country),
+//                        );
+//                      }).toList(),
+//              ),
               state is HomeLoadingState
                   ? Align(
                       alignment: Alignment.topCenter,
