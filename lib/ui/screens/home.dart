@@ -53,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
           var response = BlocProvider.of<HomeBloc>(context).locationsResponse;
           var location = BlocProvider.of<HomeBloc>(context).location;
           List<Widget> charts;
+          bool isLoading = state is HomeLoadingState;
 
           if (state is HomeLoadedLocationsState) {
             charts = [
@@ -67,15 +68,15 @@ class _HomeScreenState extends State<HomeScreen> {
               CircleChart(
                 latest: state.location.latest,
               ),
+              TimeLineChart(
+                timeLines: state.location.timeLines,
+              )
             ];
-          }
-          if (location != null) {
-            print(location.toJson());
           }
 
           return Stack(
             children: <Widget>[
-              state is HomeLoadingState
+              isLoading
                   ? Align(
                       alignment: Alignment.topCenter,
                       child: Padding(
@@ -92,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
-                  maxHeight: MediaQuery.of(context).size.height * 0.9,
+                  maxHeight: MediaQuery.of(context).size.height * 0.6,
                   minHeight: MediaQuery.of(context).size.height * 0.2,
                   body: GoogleMap(
                     initialCameraPosition: _cameraPosition,
@@ -101,10 +102,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     mapToolbarEnabled: false,
                     compassEnabled: true,
                     onMapCreated: _onMapCreated,
+                    padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).padding.top),
                   ),
                   panelBuilder: (controller) {
-                    if (state is HomeLoadingState) {
-                      return CircularProgressIndicator();
+                    if (isLoading) {
+                      return Container();
                     }
                     bool isWorldwide = location == null;
                     return Column(
@@ -146,25 +149,19 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: controller,
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              buildColumn(S.of(context).confirmedTitle, latest.confirmed),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(S.of(context).deathsTitle),
-                  Text(latest.deaths.toString())
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(S.of(context).recoveredTitle),
-                  Text(latest.recovered.toString())
-                ],
-              ),
-            ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                buildColumn(S.of(context).confirmedTitle, latest.confirmed,
+                    Colors.yellow),
+                buildColumn(
+                    S.of(context).deathsTitle, latest.deaths, Colors.red),
+                buildColumn(S.of(context).recoveredTitle, latest.recovered,
+                    Colors.green),
+              ],
+            ),
           ),
           Divider(),
         ]..addAll(charts),
@@ -172,10 +169,22 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Column buildColumn(String title, int number) {
+  Column buildColumn(String title, int number, Color color) {
     return Column(
       mainAxisSize: MainAxisSize.min,
-      children: <Widget>[Text(title), Text(number.toString())],
+      children: <Widget>[
+        Text(title),
+        SizedBox(
+          height: 5,
+        ),
+        Text(
+          number.toString(),
+          style: Theme.of(context)
+              .textTheme
+              .title
+              .copyWith(color: color, fontWeight: FontWeight.w300),
+        ),
+      ],
     );
   }
 
