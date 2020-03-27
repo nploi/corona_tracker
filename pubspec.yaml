@@ -18,6 +18,7 @@ dependencies:
     sdk: flutter
   flutter_localized_locales: ^1.1.0
   fluttertoast: ^4.0.1
+  fl_chart: ^0.8.7
   get_it: ^4.0.1
   google_maps_flutter: ^0.5.25+1
   intl: ^0.16.0
@@ -25,6 +26,7 @@ dependencies:
   page_transition: ^1.1.5
   share: ^0.6.3+6
   shared_preferences: ^0.5.6+3
+  sliding_up_panel: ^1.0.0
 
 dev_dependencies:
   bloc_test: ^4.0.0

@@ -55,6 +55,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             markerId: MarkerId(location.id.toString()),
             icon: icon,
             anchor: Offset(0.5, 0.5),
+            onTap: () {},
             position: LatLng(
               double.parse(location.coordinates.latitude),
               double.parse(location.coordinates.longitude),
