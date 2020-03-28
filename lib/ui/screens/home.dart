@@ -34,12 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
     _filteredBloc = FilteredBloc(homeBloc: BlocProvider.of<HomeBloc>(context));
     BlocProvider.of<HomeBloc>(context).add(const HomeLoadLocationsEvent());
     BlocProvider.of<SettingsBloc>(context).listen((state) {
-      if (state is SettingsUpdatedState) {
-        if (!_controller.isCompleted) {
-          var style = getMapStyle(ThemeMode.values[state.settings.themeMode]);
-          _controller.future
-              .then((controller) => controller.setMapStyle(style));
-        }
+      if (!_controller.isCompleted && state is SettingsUpdatedState) {
+        var style = getMapStyle(ThemeMode.values[state.settings.themeMode]);
+        _controller.future.then((controller) => controller.setMapStyle(style));
       }
     });
     super.initState();
@@ -148,6 +145,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                       ),
                     ),
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        height: 56,
+                        child: AppBar(
+                          backgroundColor: Colors.transparent,
+                          actions: <Widget>[
+                            buildFilteredButton(response),
+                          ],
+                        ),
+                      ),
+                    )
                   ],
                 );
               });
@@ -156,7 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Expanded buildExpanded(
+  Widget buildExpanded(
       ScrollController controller, Latest latest, List<Widget> charts) {
     return Expanded(
       child: ListView(
@@ -199,6 +208,30 @@ class _HomeScreenState extends State<HomeScreen> {
               .copyWith(color: color, fontWeight: FontWeight.w300),
         ),
       ],
+    );
+  }
+
+  Widget buildFilteredButton(LocationsResponse locationsResponse) {
+    var popupFiltered = {
+      Filtered.confirmed: S.of(context).confirmedTitle,
+      Filtered.deaths: S.of(context).deathsTitle,
+      Filtered.recovered: S.of(context).recoveredTitle,
+    };
+
+    return PopupMenuButton<Filtered>(
+      onSelected: (Filtered result) {
+        _filteredBloc
+            .add(FilteredLocationsEvent(locationsResponse, filtered: result));
+      },
+      icon: Icon(Icons.filter_list),
+      itemBuilder: (context) => popupFiltered.keys
+          .map(
+            (key) => PopupMenuItem<Filtered>(
+              value: key,
+              child: Text(popupFiltered[key]),
+            ),
+          )
+          .toList(),
     );
   }
 

@@ -26,11 +26,13 @@ class FilteredErrorState extends FilteredState {
 
 class FilteredLocationsState extends FilteredState {
   final Set<Marker> markers;
-  const FilteredLocationsState(this.markers);
+  final Filtered filtered;
+  const FilteredLocationsState(this.markers, this.filtered);
 
   @override
-  List<Object> get props => [markers];
+  List<Object> get props => [markers, filtered];
 
   @override
-  String toString() => "FilteredLocationsState {markers: $markers}";
+  String toString() => "FilteredLocationsState {markers: $markers,"
+      " filtered: $filtered}";
 }

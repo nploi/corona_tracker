@@ -59,7 +59,7 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
           filtered: event.filtered, onPressed: (location) {
         homeBloc.add(HomeLoadLocationEvent(location.id));
       }));
-      yield FilteredLocationsState(markers);
+      yield FilteredLocationsState(markers, _filtered);
     } catch (exception) {
       yield FilteredErrorState(exception.message);
     }
@@ -75,13 +75,25 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
         index++) {
       var location = locations[index];
 
-      Color color = getColor(location.latest.confirmed, filtered: filtered);
+      int number = location.latest.confirmed;
+
+      if (filtered == Filtered.deaths) {
+        number = location.latest.deaths;
+      } else if (filtered == Filtered.recovered) {
+        number = location.latest.recovered;
+      }
+
+      if (number == 0) {
+        continue;
+      }
+
+      Color color = getColor(number, filtered: filtered);
 
       var icon = await getClusterMarker(
-        location.latest.confirmed,
+        number,
         color,
         Colors.white,
-        max(150, location.latest.confirmed ~/ 150),
+        max(150, number ~/ 150),
       );
 
       markers.add(

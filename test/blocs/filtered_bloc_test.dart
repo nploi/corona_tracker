@@ -47,7 +47,7 @@ void main() {
       },
       expect: [
         FilteredLoadingState(),
-        FilteredLocationsState(markers),
+        FilteredLocationsState(markers, Filtered.confirmed),
       ],
     );
   });
