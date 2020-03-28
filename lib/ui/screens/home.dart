@@ -4,6 +4,7 @@ import 'package:corona_tracker/blocs/blocs.dart';
 import 'package:corona_tracker/blocs/home/home_bloc.dart';
 import 'package:corona_tracker/generated/l10n.dart';
 import 'package:corona_tracker/models/models.dart';
+import 'package:corona_tracker/ui/common/bottom_sheets.dart';
 import 'package:corona_tracker/ui/widgets/widgets.dart';
 import 'package:corona_tracker/utils/map_styles/map_styles.dart';
 import 'package:flutter/material.dart';
@@ -52,28 +53,28 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           var response = BlocProvider.of<HomeBloc>(context).locationsResponse;
           var location = BlocProvider.of<HomeBloc>(context).location;
-          List<Widget> charts;
+          List<Widget> charts = [];
           bool isLoading = state is HomeLoadingState;
 
-          if (state is HomeLoadedLocationsState) {
+          if (response != null) {
             charts = [
               Container(
                 height: ScreenUtil().setHeight(500),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: DonutChart(state.response.latest),
+                  child: DonutChart(response.latest),
                 ),
               ),
             ];
           }
 
-          if (state is HomeLoadedLocationState) {
+          if (location != null) {
             charts = [
               Container(
                 height: ScreenUtil().setHeight(500),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: DonutChart(state.location.latest),
+                  child: DonutChart(location.latest),
                 ),
               ),
               const Divider(),
@@ -81,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: ScreenUtil().setHeight(600),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: DashPatternTimeLineChart(state.location.timeLines),
+                  child: DashPatternTimeLineChart(location.timeLines),
                 ),
               ),
             ];
@@ -131,19 +132,41 @@ class _HomeScreenState extends State<HomeScreen> {
                           }
                           bool isWorldwide = location == null;
                           return Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
                               Icon(Icons.remove),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  isWorldwide
-                                      ? S.of(context).worldwide
-                                      : location.country +
-                                          (location.province.isNotEmpty
-                                              ? " - ${location.province}"
-                                              : ""),
-                                  style: Theme.of(context).textTheme.title,
-                                ),
+                              Row(
+                                children: <Widget>[
+                                  !isWorldwide
+                                      ? IconButton(
+                                          icon: Icon(Icons.arrow_back_ios),
+                                          onPressed: () {
+                                            BlocProvider.of<HomeBloc>(context)
+                                                .add(
+                                                    const HomeLoadLocationEvent(
+                                                        -1));
+                                          })
+                                      : const SizedBox(
+                                          width: 48,
+                                        ),
+                                  Expanded(
+                                    child: Center(
+                                      child: Text(
+                                        isWorldwide
+                                            ? S.of(context).worldwide
+                                            : location.country +
+                                                (location.province.isNotEmpty
+                                                    ? " - ${location.province}"
+                                                    : ""),
+                                        style:
+                                            Theme.of(context).textTheme.title,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 48,
+                                  )
+                                ],
                               ),
                               const Divider(),
                               buildExpanded(
@@ -164,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: AppBar(
                           backgroundColor: Colors.transparent,
                           actions: <Widget>[
-                            buildFilteredPopup(response),
+                            buildFilterButton(response),
                           ],
                         ),
                       ),
@@ -223,34 +246,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildFilteredPopup(LocationsResponse locationsResponse) {
-    var popupFiltered = {
-      Filtered.confirmed: S.of(context).confirmedTitle,
-      Filtered.deaths: S.of(context).deathsTitle,
-      Filtered.recovered: S.of(context).recoveredTitle,
-    };
-
-    return PopupMenuButton<Filtered>(
-      onSelected: (Filtered result) {
-        _filteredBloc
-            .add(FilteredLocationsEvent(locationsResponse, filtered: result));
-      },
-      icon: Icon(Icons.filter_list),
-      itemBuilder: (context) => popupFiltered.keys
-          .map(
-            (key) => PopupMenuItem<Filtered>(
-              value: key,
-              child: ListTile(
-                title: Text(popupFiltered[key]),
-                selected: _filteredBloc.filtered == key,
-                trailing:
-                    _filteredBloc.filtered == key ? Icon(Icons.check) : null,
-              ),
-            ),
-          )
-          .toList(),
-    );
+  Widget buildFilterButton(LocationsResponse locationsResponse) {
+    return Builder(
+        builder: (context) => IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              showFilterWithModalBottomSheet(context, _filteredBloc.filtered,
+                  onSelected: (filtered) {
+                _filteredBloc.add(FilteredLocationsEvent(locationsResponse,
+                    filtered: filtered));
+              });
+            }));
   }
+
   Widget buildSettingsMenuPopup(LocationsResponse locationsResponse) {
     var popupFiltered = {
       Filtered.confirmed: S.of(context).confirmedTitle,

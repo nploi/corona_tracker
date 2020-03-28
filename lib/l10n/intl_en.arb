@@ -6,5 +6,6 @@
   "worldwide": "Worldwide",
   "themeTitle": "Theme",
   "dartModeTitle": "Dark mode",
-  "languageTitle": "Language"
+  "languageTitle": "Language",
+  "filterWithTitle": "Filter with"
 }

@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmedTitle" : MessageLookupByLibrary.simpleMessage("Lây nhiễm"),
     "dartModeTitle" : MessageLookupByLibrary.simpleMessage("Chế độ ban đêm"),
     "deathsTitle" : MessageLookupByLibrary.simpleMessage("Tử vong"),
+    "filterWithTitle" : MessageLookupByLibrary.simpleMessage("Lộc với"),
     "languageTitle" : MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
     "recoveredTitle" : MessageLookupByLibrary.simpleMessage("Phục hồi"),
     "themeTitle" : MessageLookupByLibrary.simpleMessage("Giao diện"),

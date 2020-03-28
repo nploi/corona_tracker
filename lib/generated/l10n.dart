@@ -100,6 +100,15 @@ class S {
       args: [],
     );
   }
+
+  String get filterWithTitle {
+    return Intl.message(
+      'Filter with',
+      name: 'filterWithTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

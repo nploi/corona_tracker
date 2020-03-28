@@ -25,6 +25,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "confirmedTitle" : MessageLookupByLibrary.simpleMessage("Confirmed"),
     "dartModeTitle" : MessageLookupByLibrary.simpleMessage("Dark mode"),
     "deathsTitle" : MessageLookupByLibrary.simpleMessage("Deaths"),
+    "filterWithTitle" : MessageLookupByLibrary.simpleMessage("Filter with"),
     "languageTitle" : MessageLookupByLibrary.simpleMessage("Language"),
     "recoveredTitle" : MessageLookupByLibrary.simpleMessage("Recovered"),
     "themeTitle" : MessageLookupByLibrary.simpleMessage("Theme"),

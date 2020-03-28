@@ -47,5 +47,5 @@ class HomeLoadedLocationState extends HomeState {
 
   @override
   String toString() =>
-      "HomeLoadedLocationState {response: ${location.toJson()}";
+      "HomeLoadedLocationState {response: ${location?.toJson()}";
 }

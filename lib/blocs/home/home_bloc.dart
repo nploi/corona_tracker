@@ -52,7 +52,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       HomeLoadLocationEvent event) async* {
     yield HomeLoadingState();
     try {
-      _location = await homeRepository.getLocation(id: event.locationId);
+      // Show Worldwide
+      if (event.locationId < 0) {
+        _location = null;
+      } else {
+        _location = await homeRepository.getLocation(id: event.locationId);
+      }
       yield HomeLoadedLocationState(_location);
     } catch (exception) {
       yield HomeErrorState(exception.message);
