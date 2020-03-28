@@ -108,7 +108,6 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
 
   static Future<Set<Marker>> makeMarkers(List<Location> locations,
       {Function(Location) onPressed,
-      BuildContext context,
       Filtered filtered = Filtered.confirmed}) async {
     Set<Marker> markers = {};
 
@@ -151,7 +150,7 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
           infoWindow: InfoWindow(
             title:
                 (location.province.isNotEmpty ? "${location.province}, " : "") +
-                    location.country,
+                    location?.country,
           ),
           position: LatLng(
             double.parse(location.coordinates.latitude),

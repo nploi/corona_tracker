@@ -12,22 +12,14 @@ void main() {
   FilteredBloc filteredBloc;
   MockFilteredRepository filteredRepository;
 
-  LocationsResponse locationsResponse = LocationsResponse(locations: <Location>[
-    Location(
-        id: 1,
-        latest: Latest(confirmed: 10),
-        coordinates: Coordinates(
-          latitude: "10.0",
-          longitude: "10.0",
-        )),
-  ]);
+  LocationsResponse locationsResponse;
 
   Set<Marker> markers = {};
 
   setUp(() async {
     filteredRepository = MockFilteredRepository();
     filteredBloc = FilteredBloc(filteredRepository: filteredRepository);
-    markers = await FilteredBloc.makeMarkers(locationsResponse.locations);
+    locationsResponse = LocationsResponse(locations: <Location>[]);
   });
 
   tearDown(() {
