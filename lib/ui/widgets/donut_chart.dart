@@ -1,15 +1,18 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/flutter.dart';
+import 'package:corona_tracker/blocs/blocs.dart';
 import 'package:corona_tracker/generated/l10n.dart';
 import 'package:corona_tracker/models/latest.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'indicator.dart';
 
-class DonutAutoLabelChart extends StatelessWidget {
+class DonutChart extends StatelessWidget {
   final Latest latest;
   final bool animate;
 
-  const DonutAutoLabelChart(this.latest, {this.animate = false});
+  const DonutChart(this.latest, {this.animate = true});
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,6 @@ class DonutAutoLabelChart extends StatelessWidget {
             Indicator(
               color: Colors.yellow,
               text: S.of(context).confirmedTitle,
-              isSquare: true,
             ),
             const SizedBox(
               height: 4,
@@ -43,7 +45,6 @@ class DonutAutoLabelChart extends StatelessWidget {
             Indicator(
               color: Colors.red,
               text: S.of(context).deathsTitle,
-              isSquare: true,
             ),
             const SizedBox(
               height: 4,
@@ -51,7 +52,6 @@ class DonutAutoLabelChart extends StatelessWidget {
             Indicator(
               color: Colors.green,
               text: S.of(context).recoveredTitle,
-              isSquare: true,
             ),
             const SizedBox(
               height: 18,
@@ -82,6 +82,8 @@ class DonutAutoLabelChart extends StatelessWidget {
       LinearSales(recovered, latest.recovered),
     ];
 
+    var settings = BlocProvider.of<SettingsBloc>(context).settings;
+
     return [
       charts.Series<LinearSales, String>(
         id: 'Sales',
@@ -89,6 +91,24 @@ class DonutAutoLabelChart extends StatelessWidget {
         measureFn: (LinearSales sales, _) => sales.number,
         data: data,
         colorFn: (LinearSales sales, _) => colors[sales.label],
+        outsideLabelStyleAccessorFn: (LinearSales sales, _) {
+          var color = charts.MaterialPalette.black;
+          if (settings.isDarkMode()) {
+            color = charts.MaterialPalette.white;
+          }
+          return TextStyleSpec(
+            color: color,
+          );
+        },
+        insideLabelStyleAccessorFn: (LinearSales sales, _) {
+          var color = charts.MaterialPalette.black;
+          if (sales.label != confirmed) {
+            color = charts.MaterialPalette.white;
+          }
+          return TextStyleSpec(
+            color: color,
+          );
+        },
         labelAccessorFn: (LinearSales row, _) =>
             getPercent(row.number, sum).toStringAsFixed(0) + ' %',
       )

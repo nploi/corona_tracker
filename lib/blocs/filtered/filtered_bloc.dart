@@ -117,12 +117,13 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
   }
 
   static Color getColor(int number, {Filtered filtered = Filtered.confirmed}) {
+    const opacity = 0.8;
     if (filtered == Filtered.deaths) {
-      return Colors.red;
+      return Colors.red.withOpacity(opacity);
     }
 
     if (filtered == Filtered.recovered) {
-      return Colors.green;
+      return Colors.green.withOpacity(opacity);
     }
 
     var color = const Color(0xffFFA07A);
@@ -138,7 +139,7 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
     } else if (number > 50000) {
       color = const Color(0xff8B0000);
     }
-    return color;
+    return color.withOpacity(opacity);
   }
 
   @override

@@ -3,5 +3,8 @@
   "confirmedTitle": "Lây nhiễm",
   "deathsTitle": "Tử vong",
   "recoveredTitle": "Phục hồi",
-  "worldwide": "Thế giới"
+  "worldwide": "Thế giới",
+  "themeTitle": "Giao diện",
+  "dartModeTitle": "Chế độ ban đêm",
+  "languageTitle": "Ngôn ngữ"
 }

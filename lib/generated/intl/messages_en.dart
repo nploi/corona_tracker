@@ -23,8 +23,11 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "appName" : MessageLookupByLibrary.simpleMessage("Corona Tracker"),
     "confirmedTitle" : MessageLookupByLibrary.simpleMessage("Confirmed"),
+    "dartModeTitle" : MessageLookupByLibrary.simpleMessage("Dark mode"),
     "deathsTitle" : MessageLookupByLibrary.simpleMessage("Deaths"),
+    "languageTitle" : MessageLookupByLibrary.simpleMessage("Language"),
     "recoveredTitle" : MessageLookupByLibrary.simpleMessage("Recovered"),
+    "themeTitle" : MessageLookupByLibrary.simpleMessage("Theme"),
     "worldwide" : MessageLookupByLibrary.simpleMessage("Worldwide")
   };
 }

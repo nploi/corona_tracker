@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _filteredBloc = FilteredBloc(homeBloc: BlocProvider.of<HomeBloc>(context));
     BlocProvider.of<HomeBloc>(context).add(const HomeLoadLocationsEvent());
     BlocProvider.of<SettingsBloc>(context).listen((state) {
-      if (!_controller.isCompleted && state is SettingsUpdatedState) {
+      if (_controller.isCompleted && state is SettingsUpdatedState) {
         var style = getMapStyle(ThemeMode.values[state.settings.themeMode]);
         _controller.future.then((controller) => controller.setMapStyle(style));
       }
@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     ScreenUtil.init(context);
     return Scaffold(
+      drawer: CustomDrawer(),
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
           var response = BlocProvider.of<HomeBloc>(context).locationsResponse;
@@ -60,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: ScreenUtil().setHeight(500),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: DonutAutoLabelChart(state.response.latest),
+                  child: DonutChart(state.response.latest),
                 ),
               ),
             ];
@@ -72,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: ScreenUtil().setHeight(500),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: DonutAutoLabelChart(state.location.latest),
+                  child: DonutChart(state.location.latest),
                 ),
               ),
               const Divider(),
@@ -108,12 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     Align(
                       alignment: Alignment.center,
                       child: SlidingUpPanel(
+                        color: Theme.of(context).scaffoldBackgroundColor,
                         borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20),
                         ),
-                        maxHeight: MediaQuery.of(context).size.height * 0.6,
-                        minHeight: MediaQuery.of(context).size.height * 0.2,
+                        minHeight: ScreenUtil().setHeight(400),
                         body: GoogleMap(
                           initialCameraPosition: _cameraPosition,
                           markers: markers,
@@ -163,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: AppBar(
                           backgroundColor: Colors.transparent,
                           actions: <Widget>[
-                            buildFilteredButton(response),
+                            buildFilteredPopup(response),
                           ],
                         ),
                       ),
@@ -222,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildFilteredButton(LocationsResponse locationsResponse) {
+  Widget buildFilteredPopup(LocationsResponse locationsResponse) {
     var popupFiltered = {
       Filtered.confirmed: S.of(context).confirmedTitle,
       Filtered.deaths: S.of(context).deathsTitle,
@@ -239,7 +240,40 @@ class _HomeScreenState extends State<HomeScreen> {
           .map(
             (key) => PopupMenuItem<Filtered>(
               value: key,
-              child: Text(popupFiltered[key]),
+              child: ListTile(
+                title: Text(popupFiltered[key]),
+                selected: _filteredBloc.filtered == key,
+                trailing:
+                    _filteredBloc.filtered == key ? Icon(Icons.check) : null,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+  Widget buildSettingsMenuPopup(LocationsResponse locationsResponse) {
+    var popupFiltered = {
+      Filtered.confirmed: S.of(context).confirmedTitle,
+      Filtered.deaths: S.of(context).deathsTitle,
+      Filtered.recovered: S.of(context).recoveredTitle,
+    };
+
+    return PopupMenuButton<Filtered>(
+      onSelected: (Filtered result) {
+        _filteredBloc
+            .add(FilteredLocationsEvent(locationsResponse, filtered: result));
+      },
+      icon: Icon(Icons.filter_list),
+      itemBuilder: (context) => popupFiltered.keys
+          .map(
+            (key) => PopupMenuItem<Filtered>(
+              value: key,
+              child: ListTile(
+                title: Text(popupFiltered[key]),
+                selected: _filteredBloc.filtered == key,
+                trailing:
+                    _filteredBloc.filtered == key ? Icon(Icons.check) : null,
+              ),
             ),
           )
           .toList(),

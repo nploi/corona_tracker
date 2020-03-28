@@ -1,5 +1,5 @@
 class Settings {
-  static const int themeSystem = 0;
+  static const int themeSystem = 1;
   static const String languageSystem = "system";
 
   int themeMode;
@@ -28,5 +28,9 @@ class Settings {
 
   bool isLanguageSystem() {
     return languageCode == languageSystem;
+  }
+
+  bool isDarkMode() {
+    return themeMode == 2;
   }
 }

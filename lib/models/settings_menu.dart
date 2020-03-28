@@ -1,0 +1,1 @@
+enum SettingsMenu { language, theme }

@@ -10,7 +10,7 @@ class Indicator extends StatelessWidget {
     Key key,
     this.color,
     this.text,
-    this.isSquare,
+    this.isSquare = false,
     this.size = 16,
   }) : super(key: key);
 

@@ -3,5 +3,8 @@
   "confirmedTitle": "Confirmed",
   "deathsTitle": "Deaths",
   "recoveredTitle": "Recovered",
-  "worldwide": "Worldwide"
+  "worldwide": "Worldwide",
+  "themeTitle": "Theme",
+  "dartModeTitle": "Dark mode",
+  "languageTitle": "Language"
 }

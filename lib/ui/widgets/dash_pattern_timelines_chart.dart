@@ -1,6 +1,9 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:corona_tracker/generated/l10n.dart';
 import 'package:corona_tracker/models/models.dart';
 import 'package:flutter/material.dart';
+
+import 'indicator.dart';
 
 class DashPatternTimeLineChart extends StatelessWidget {
   final TimeLines timeLines;
@@ -10,9 +13,43 @@ class DashPatternTimeLineChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return charts.TimeSeriesChart(
-      _createDataFromTimeLines(context, timeLines),
-      animate: animate,
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: charts.TimeSeriesChart(
+            _createDataFromTimeLines(context, timeLines),
+            animate: animate,
+          ),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Indicator(
+              color: Colors.yellow,
+              text: S.of(context).confirmedTitle,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Indicator(
+              color: Colors.red,
+              text: S.of(context).deathsTitle,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Indicator(
+              color: Colors.green,
+              text: S.of(context).recoveredTitle,
+            ),
+          ],
+        ),
+      ],
     );
   }
 
@@ -34,28 +71,33 @@ class DashPatternTimeLineChart extends StatelessWidget {
         .toList();
 
     return [
-      charts.Series<TimeSeriesSales, DateTime>(
+      buildSeries(
         id: "Confirmed",
-        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.date,
-        measureFn: (TimeSeriesSales sales, _) => sales.number,
+        color: charts.MaterialPalette.yellow.shadeDefault,
         data: confirmedData,
       ),
-      charts.Series<TimeSeriesSales, DateTime>(
-        id: 'Deaths',
-        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.date,
-        measureFn: (TimeSeriesSales sales, _) => sales.number,
+      buildSeries(
+        id: "Deaths",
+        color: charts.MaterialPalette.red.shadeDefault,
         data: deathsData,
       ),
-      charts.Series<TimeSeriesSales, DateTime>(
-        id: 'Recovered',
-        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.date,
-        measureFn: (TimeSeriesSales sales, _) => sales.number,
+      buildSeries(
+        id: "Recovered",
+        color: charts.MaterialPalette.green.shadeDefault,
         data: recoveredData,
-      )
+      ),
     ];
+  }
+
+  static charts.Series<TimeSeriesSales, DateTime> buildSeries(
+      {String id, List<TimeSeriesSales> data, charts.Color color}) {
+    return charts.Series<TimeSeriesSales, DateTime>(
+      id: id,
+      colorFn: (_, __) => color,
+      domainFn: (TimeSeriesSales sales, _) => sales.date,
+      measureFn: (TimeSeriesSales sales, _) => sales.number,
+      data: data,
+    );
   }
 }
 

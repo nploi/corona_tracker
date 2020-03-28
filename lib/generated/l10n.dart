@@ -73,6 +73,33 @@ class S {
       args: [],
     );
   }
+
+  String get themeTitle {
+    return Intl.message(
+      'Theme',
+      name: 'themeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get dartModeTitle {
+    return Intl.message(
+      'Dark mode',
+      name: 'dartModeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get languageTitle {
+    return Intl.message(
+      'Language',
+      name: 'languageTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
