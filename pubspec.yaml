@@ -22,6 +22,7 @@ dependencies:
   flutter_localized_locales: ^1.1.0
   fluttertoast: ^4.0.1
   flutter_screenutil: ^1.1.0
+  flutter_offline: ^0.3.0
   get_it: ^4.0.1
   google_maps_flutter: ^0.5.25+2
   intl: ^0.16.0

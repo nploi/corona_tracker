@@ -23,11 +23,14 @@ class MessageLookup extends MessageLookupByLibrary {
   static _notInlinedMessages(_) => <String, Function> {
     "activeTitle" : MessageLookupByLibrary.simpleMessage("Đang nhiễm"),
     "appName" : MessageLookupByLibrary.simpleMessage("Corona Tracker"),
+    "backAgainToLeaveMessage" : MessageLookupByLibrary.simpleMessage("Bấm trở về lần nữa để thoát"),
     "confirmedTitle" : MessageLookupByLibrary.simpleMessage("Lây nhiễm"),
     "dartModeTitle" : MessageLookupByLibrary.simpleMessage("Chế độ ban đêm"),
     "deathsTitle" : MessageLookupByLibrary.simpleMessage("Tử vong"),
     "filterWithTitle" : MessageLookupByLibrary.simpleMessage("Lộc với"),
     "languageTitle" : MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
+    "offlineStatus" : MessageLookupByLibrary.simpleMessage("Chưa kết nối mạng"),
+    "onlineStatus" : MessageLookupByLibrary.simpleMessage("Đã kết nối mạng"),
     "recoveredTitle" : MessageLookupByLibrary.simpleMessage("Phục hồi"),
     "themeTitle" : MessageLookupByLibrary.simpleMessage("Giao diện"),
     "worldwide" : MessageLookupByLibrary.simpleMessage("Thế giới")

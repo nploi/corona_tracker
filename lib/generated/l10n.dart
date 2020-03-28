@@ -65,6 +65,24 @@ class S {
     );
   }
 
+  String get onlineStatus {
+    return Intl.message(
+      'Online',
+      name: 'onlineStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get offlineStatus {
+    return Intl.message(
+      'Offline',
+      name: 'offlineStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
   String get worldwide {
     return Intl.message(
       'Worldwide',
@@ -114,6 +132,15 @@ class S {
     return Intl.message(
       'active',
       name: 'activeTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String get backAgainToLeaveMessage {
+    return Intl.message(
+      'Tap back again to leave',
+      name: 'backAgainToLeaveMessage',
       desc: '',
       args: [],
     );

@@ -3,10 +3,13 @@
   "confirmedTitle": "Lây nhiễm",
   "deathsTitle": "Tử vong",
   "recoveredTitle": "Phục hồi",
+  "onlineStatus": "Đã kết nối mạng",
+  "offlineStatus": "Chưa kết nối mạng",
   "worldwide": "Thế giới",
   "themeTitle": "Giao diện",
   "dartModeTitle": "Chế độ ban đêm",
   "languageTitle": "Ngôn ngữ",
   "filterWithTitle": "Lộc với",
-  "activeTitle": "Đang nhiễm"
+  "activeTitle": "Đang nhiễm",
+  "backAgainToLeaveMessage": "Bấm trở về lần nữa để thoát"
 }
