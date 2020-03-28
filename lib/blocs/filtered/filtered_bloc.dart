@@ -67,6 +67,7 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
 
   static Future<Set<Marker>> makeMarkers(List<Location> locations,
       {Function(Location) onPressed,
+      BuildContext context,
       Filtered filtered = Filtered.confirmed}) async {
     Set<Marker> markers = {};
 
@@ -106,6 +107,11 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
               onPressed(location);
             }
           },
+          infoWindow: InfoWindow(
+            title:
+                (location.province.isNotEmpty ? "${location.province}, " : "") +
+                    location.country,
+          ),
           position: LatLng(
             double.parse(location.coordinates.latitude),
             double.parse(location.coordinates.longitude),
@@ -117,7 +123,7 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
   }
 
   static Color getColor(int number, {Filtered filtered = Filtered.confirmed}) {
-    const opacity = 0.8;
+    const opacity = 0.6;
     if (filtered == Filtered.deaths) {
       return Colors.red.withOpacity(opacity);
     }

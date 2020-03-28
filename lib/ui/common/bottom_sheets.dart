@@ -1,4 +1,3 @@
-import 'package:corona_tracker/blocs/blocs.dart';
 import 'package:corona_tracker/generated/l10n.dart';
 import 'package:corona_tracker/models/filtered.dart';
 import 'package:flutter/material.dart';

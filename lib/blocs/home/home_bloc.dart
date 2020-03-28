@@ -14,6 +14,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeRepository homeRepository;
   LocationsResponse _locationsResponse;
   Location _location;
+  final Map<String, Latest> _locationsGroup = {};
 
   HomeBloc({this.homeRepository = const HomeRepository()});
 
@@ -21,6 +22,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeState get initialState => HomeInitState();
 
   LocationsResponse get locationsResponse => _locationsResponse;
+  List<Location> get locationsGroup {
+    List<Location> locations = [];
+    _locationsGroup.entries.toList().forEach((entry) {
+      var location = Location(country: entry.key, latest: entry.value);
+      locations.add(location);
+    });
+    locations.sort((a, b) {
+      if (a.latest.confirmed > b.latest.confirmed) {
+        return -1;
+      }
+      if (a.latest.confirmed == b.latest.confirmed) {
+        return 0;
+      }
+      return 1;
+    });
+    return locations;
+  }
+
   Location get location => _location;
 
   @override
@@ -42,10 +61,29 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     yield HomeLoadingState();
     try {
       _locationsResponse = await homeRepository.getLocations();
+      groupLocations();
       yield HomeLoadedLocationsState(_locationsResponse);
     } catch (exception) {
       yield HomeErrorState(exception.message);
     }
+  }
+
+  void groupLocations() {
+    _locationsGroup.clear();
+    if (_locationsResponse.locations == null) {
+      return;
+    }
+    _locationsResponse.locations.forEach((location) {
+      if (!_locationsGroup.containsKey(location.country)) {
+        _locationsGroup[location.country] = location.latest;
+      } else {
+        _locationsGroup[location.country].confirmed +=
+            location.latest.confirmed;
+        _locationsGroup[location.country].deaths += location.latest.deaths;
+        _locationsGroup[location.country].recovered +=
+            location.latest.recovered;
+      }
+    });
   }
 
   Stream<HomeState> _handleHomeLoadLocationEvent(
@@ -55,7 +93,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       // Show Worldwide
       if (event.locationId < 0) {
         _location = null;
-      } else {
+      } else if (event.locationId != location?.id) {
         _location = await homeRepository.getLocation(id: event.locationId);
       }
       yield HomeLoadedLocationState(_location);

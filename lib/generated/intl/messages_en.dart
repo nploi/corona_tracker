@@ -21,6 +21,7 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "activeTitle" : MessageLookupByLibrary.simpleMessage("active"),
     "appName" : MessageLookupByLibrary.simpleMessage("Corona Tracker"),
     "confirmedTitle" : MessageLookupByLibrary.simpleMessage("Confirmed"),
     "dartModeTitle" : MessageLookupByLibrary.simpleMessage("Dark mode"),

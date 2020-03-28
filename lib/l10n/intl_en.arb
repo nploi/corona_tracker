@@ -7,5 +7,6 @@
   "themeTitle": "Theme",
   "dartModeTitle": "Dark mode",
   "languageTitle": "Language",
-  "filterWithTitle": "Filter with"
+  "filterWithTitle": "Filter with",
+  "activeTitle": "active"
 }

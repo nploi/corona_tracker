@@ -109,6 +109,15 @@ class S {
       args: [],
     );
   }
+
+  String get activeTitle {
+    return Intl.message(
+      'active',
+      name: 'activeTitle',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

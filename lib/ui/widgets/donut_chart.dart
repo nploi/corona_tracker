@@ -37,7 +37,7 @@ class DonutChart extends StatelessWidget {
           children: <Widget>[
             Indicator(
               color: Colors.yellow,
-              text: S.of(context).confirmedTitle,
+              text: S.of(context).activeTitle,
             ),
             const SizedBox(
               height: 4,
@@ -64,20 +64,19 @@ class DonutChart extends StatelessWidget {
 
   List<charts.Series<LinearSales, String>> _createDataFromLatest(
       BuildContext context, Latest latest) {
-    int sum = latest.recovered + latest.confirmed + latest.deaths;
-
-    final confirmed = S.of(context).confirmedTitle;
+    int activeNumber = latest.confirmed - latest.recovered - latest.deaths;
+    final active = S.of(context).activeTitle;
     final deaths = S.of(context).deathsTitle;
     final recovered = S.of(context).recoveredTitle;
 
     Map<String, dynamic> colors = {
-      confirmed: charts.MaterialPalette.yellow.shadeDefault,
+      active: charts.MaterialPalette.yellow.shadeDefault,
       deaths: charts.MaterialPalette.red.shadeDefault,
       recovered: charts.MaterialPalette.green.shadeDefault,
     };
 
     final data = [
-      LinearSales(confirmed, latest.confirmed),
+      LinearSales(active, activeNumber),
       LinearSales(deaths, latest.deaths),
       LinearSales(recovered, latest.recovered),
     ];
@@ -102,7 +101,7 @@ class DonutChart extends StatelessWidget {
         },
         insideLabelStyleAccessorFn: (LinearSales sales, _) {
           var color = charts.MaterialPalette.black;
-          if (sales.label != confirmed) {
+          if (sales.label != active) {
             color = charts.MaterialPalette.white;
           }
           return TextStyleSpec(
@@ -110,7 +109,7 @@ class DonutChart extends StatelessWidget {
           );
         },
         labelAccessorFn: (LinearSales row, _) =>
-            getPercent(row.number, sum).toStringAsFixed(0) + ' %',
+            getPercent(row.number, latest.confirmed).toStringAsFixed(0) + ' %',
       )
     ];
   }

@@ -53,16 +53,28 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           var response = BlocProvider.of<HomeBloc>(context).locationsResponse;
           var location = BlocProvider.of<HomeBloc>(context).location;
+          var locationsGroup =
+              BlocProvider.of<HomeBloc>(context).locationsGroup;
           List<Widget> charts = [];
           bool isLoading = state is HomeLoadingState;
 
-          if (response != null) {
+          if (response != null && locationsGroup != null) {
             charts = [
               Container(
                 height: ScreenUtil().setHeight(500),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: DonutChart(response.latest),
+                ),
+              ),
+              Container(
+                height: ScreenUtil().setHeight(500),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TopCountriesChart(
+                    animate: true,
+                    locationsGroup: locationsGroup,
+                  ),
                 ),
               ),
             ];
@@ -122,13 +134,20 @@ class _HomeScreenState extends State<HomeScreen> {
                           myLocationEnabled: true,
                           mapToolbarEnabled: false,
                           compassEnabled: true,
+                          myLocationButtonEnabled: true,
                           onMapCreated: _onMapCreated,
                           padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).padding.top),
+                            top: MediaQuery.of(context).padding.top + 40,
+                            bottom: ScreenUtil().setHeight(400),
+                          ),
                         ),
                         panelBuilder: (controller) {
                           if (isLoading) {
-                            return Container();
+                            return Container(
+                              alignment: Alignment.topCenter,
+                              padding: const EdgeInsets.only(top: 10),
+                              child: const CircularProgressIndicator(),
+                            );
                           }
                           bool isWorldwide = location == null;
                           return Column(
@@ -154,10 +173,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       child: Text(
                                         isWorldwide
                                             ? S.of(context).worldwide
-                                            : location.country +
-                                                (location.province.isNotEmpty
-                                                    ? " - ${location.province}"
-                                                    : ""),
+                                            : (location.province.isNotEmpty
+                                                    ? "${location.province}, "
+                                                    : "") +
+                                                location.country,
                                         style:
                                             Theme.of(context).textTheme.title,
                                       ),
@@ -182,11 +201,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Align(
                       alignment: Alignment.topCenter,
-                      child: Container(
-                        height: 56,
-                        child: AppBar(
-                          backgroundColor: Colors.transparent,
-                          actions: <Widget>[
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: MediaQuery.of(context).padding.top),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            buildDrawerButton(),
                             buildFilterButton(response),
                           ],
                         ),
@@ -259,33 +280,13 @@ class _HomeScreenState extends State<HomeScreen> {
             }));
   }
 
-  Widget buildSettingsMenuPopup(LocationsResponse locationsResponse) {
-    var popupFiltered = {
-      Filtered.confirmed: S.of(context).confirmedTitle,
-      Filtered.deaths: S.of(context).deathsTitle,
-      Filtered.recovered: S.of(context).recoveredTitle,
-    };
-
-    return PopupMenuButton<Filtered>(
-      onSelected: (Filtered result) {
-        _filteredBloc
-            .add(FilteredLocationsEvent(locationsResponse, filtered: result));
-      },
-      icon: Icon(Icons.filter_list),
-      itemBuilder: (context) => popupFiltered.keys
-          .map(
-            (key) => PopupMenuItem<Filtered>(
-              value: key,
-              child: ListTile(
-                title: Text(popupFiltered[key]),
-                selected: _filteredBloc.filtered == key,
-                trailing:
-                    _filteredBloc.filtered == key ? Icon(Icons.check) : null,
-              ),
-            ),
-          )
-          .toList(),
-    );
+  Widget buildDrawerButton() {
+    return Builder(
+        builder: (context) => IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            }));
   }
 
   void _onMapCreated(GoogleMapController controller) {
