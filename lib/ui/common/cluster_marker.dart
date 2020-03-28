@@ -28,7 +28,6 @@ Future<BitmapDescriptor> getClusterMarker(
     text: clusterSize.toString(),
     style: TextStyle(
       fontSize: 40,
-      fontWeight: FontWeight.bold,
       color: textColor,
     ),
   );

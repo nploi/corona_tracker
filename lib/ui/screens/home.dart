@@ -9,6 +9,7 @@ import 'package:corona_tracker/utils/map_styles/map_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -44,6 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context);
     return Scaffold(
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
@@ -55,8 +57,11 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is HomeLoadedLocationsState) {
             charts = [
               Container(
-                height: 200,
-                child: DonutAutoLabelChart(state.response.latest),
+                height: ScreenUtil().setHeight(500),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DonutAutoLabelChart(state.response.latest),
+                ),
               ),
             ];
           }
@@ -64,13 +69,19 @@ class _HomeScreenState extends State<HomeScreen> {
           if (state is HomeLoadedLocationState) {
             charts = [
               Container(
-                height: 200,
-                child: DonutAutoLabelChart(state.location.latest),
+                height: ScreenUtil().setHeight(500),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DonutAutoLabelChart(state.location.latest),
+                ),
               ),
               const Divider(),
               SizedBox(
-                height: 200,
-                child: DashPatternTimeLineChart(state.location.timeLines),
+                height: ScreenUtil().setHeight(600),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: DashPatternTimeLineChart(state.location.timeLines),
+                ),
               ),
             ];
           }
