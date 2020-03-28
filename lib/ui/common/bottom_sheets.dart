@@ -13,17 +13,6 @@ void showFilterWithModalBottomSheet(BuildContext context, Filtered current,
     Filtered.recovered: S.of(context).recoveredTitle,
   };
 
-  widgets.add(Column(
-    children: <Widget>[
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Text(S.of(context).filterWithTitle),
-      ),
-      const Divider(
-        height: 1,
-      ),
-    ],
-  ));
   filterPopupRoutes.keys.forEach((key) {
     widgets.add(Column(
       mainAxisSize: MainAxisSize.min,
@@ -47,13 +36,20 @@ void showFilterWithModalBottomSheet(BuildContext context, Filtered current,
   showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
-        return BottomSheet(
-          builder: (BuildContext context) {
-            return Wrap(
-              children: widgets,
-            );
-          },
-          onClosing: () {},
+        return Material(
+          child: Wrap(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(S.of(context).filterWithTitle),
+                ),
+              ),
+              const Divider(
+                height: 1,
+              ),
+            ]..addAll(widgets),
+          ),
         );
       });
 }
