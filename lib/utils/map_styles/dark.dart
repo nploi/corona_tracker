@@ -1,5 +1,4 @@
-var mapStyleDark =
-"""
+String mapStyleDark = """
   [{
     "featureType": "all",
     "elementType": "labels.text.fill",

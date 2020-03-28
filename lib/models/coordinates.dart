@@ -10,9 +10,9 @@ class Coordinates {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['latitude'] = this.latitude;
-    data['longitude'] = this.longitude;
+    final Map<String, dynamic> data = {};
+    data['latitude'] = latitude;
+    data['longitude'] = longitude;
     return data;
   }
 }

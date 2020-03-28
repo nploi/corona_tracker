@@ -9,12 +9,12 @@ class SettingsRepository {
 
   Future<bool> updateSettings(Settings settings) async {
     return locator<StorageDeviceService>()
-        .set(StorageDeviceService.SETTINGS, jsonEncode(settings.toJson()));
+        .set(StorageDeviceService.settingsKey, jsonEncode(settings.toJson()));
   }
 
   Settings getSettings() {
     var settingInfo =
-        locator<StorageDeviceService>().get(StorageDeviceService.SETTINGS);
+        locator<StorageDeviceService>().get(StorageDeviceService.settingsKey);
     if (settingInfo == null) {
       return Settings();
     }

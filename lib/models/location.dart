@@ -36,32 +36,31 @@ class Location {
     county = json['county'];
     lastUpdated = json['last_updated'];
     coordinates = json['coordinates'] != null
-        ? new Coordinates.fromJson(json['coordinates'])
+        ? Coordinates.fromJson(json['coordinates'])
         : null;
-    latest =
-        json['latest'] != null ? new Latest.fromJson(json['latest']) : null;
+    latest = json['latest'] != null ? Latest.fromJson(json['latest']) : null;
     timeLines = json['timelines'] != null
-        ? new TimeLines.fromJson(json['timelines'])
+        ? TimeLines.fromJson(json['timelines'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['country'] = this.country;
-    data['country_code'] = this.countryCode;
-    data['country_population'] = this.countryPopulation;
-    data['province'] = this.province;
-    data['county'] = this.county;
-    data['last_updated'] = this.lastUpdated;
-    if (this.coordinates != null) {
-      data['coordinates'] = this.coordinates.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['country'] = country;
+    data['country_code'] = countryCode;
+    data['country_population'] = countryPopulation;
+    data['province'] = province;
+    data['county'] = county;
+    data['last_updated'] = lastUpdated;
+    if (coordinates != null) {
+      data['coordinates'] = coordinates.toJson();
     }
-    if (this.latest != null) {
-      data['latest'] = this.latest.toJson();
+    if (latest != null) {
+      data['latest'] = latest.toJson();
     }
-    if (this.timeLines != null) {
-      data['timelines'] = this.timeLines.toJson();
+    if (timeLines != null) {
+      data['timelines'] = timeLines.toJson();
     }
     return data;
   }

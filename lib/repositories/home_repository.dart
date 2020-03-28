@@ -3,7 +3,7 @@ import 'package:corona_tracker/models/models.dart';
 
 class HomeRepository {
   const HomeRepository();
-  final CoronaTrackerApi coronaTrackerApi = const CoronaTrackerApi();
+  CoronaTrackerApi get coronaTrackerApi => const CoronaTrackerApi();
 
   Future<LocationsResponse> getLocations() async {
     return coronaTrackerApi.getLocations();

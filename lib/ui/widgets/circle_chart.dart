@@ -1,106 +1,62 @@
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:corona_tracker/generated/l10n.dart';
-import 'package:corona_tracker/models/models.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:corona_tracker/models/latest.dart';
 import 'package:flutter/material.dart';
 
-import 'indicator.dart';
-
-class CircleChart extends StatelessWidget {
+class DonutAutoLabelChart extends StatelessWidget {
   final Latest latest;
+  final bool animate;
 
-  const CircleChart({Key key, this.latest}) : super(key: key);
+  const DonutAutoLabelChart(this.latest, {this.animate = false});
 
   @override
   Widget build(BuildContext context) {
-    return buildChart(context);
-  }
-
-  Widget buildChart(BuildContext context) {
-    int sum = latest.recovered + latest.confirmed + latest.deaths;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: PieChart(
-              PieChartData(
-                sections: <PieChartSectionData>[
-                  PieChartSectionData(
-                    value: getPercent(latest.confirmed, sum),
-                    color: Colors.yellow,
-                    titleStyle: Theme.of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(color: Colors.black),
-                    title:
-                        "${getPercent(latest.confirmed, sum).toStringAsFixed(0)} %",
-                  ),
-                  PieChartSectionData(
-                    value: getPercent(latest.deaths, sum),
-                    color: Colors.red,
-                    titleStyle: Theme.of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(color: Colors.white),
-                    title:
-                        "${getPercent(latest.deaths, sum).toStringAsFixed(0)} %",
-                  ),
-                  PieChartSectionData(
-                    value: getPercent(latest.recovered, sum),
-                    color: Colors.green,
-                    titleStyle: Theme.of(context)
-                        .textTheme
-                        .caption
-                        .copyWith(color: Colors.white),
-                    title:
-                        "${getPercent(latest.recovered, sum).toStringAsFixed(0)} %",
-                  ),
-                ],
-                sectionsSpace: 0,
-                centerSpaceRadius: 20,
-                borderData: FlBorderData(
-                  show: false,
-                ),
-              ),
-            ),
-          ),
-          Column(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Indicator(
-                color: Colors.yellow,
-                text: S.of(context).confirmedTitle,
-                isSquare: true,
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Indicator(
-                color: Colors.red,
-                text: S.of(context).deathsTitle,
-                isSquare: true,
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Indicator(
-                color: Colors.green,
-                text: S.of(context).recoveredTitle,
-                isSquare: true,
-              ),
-              SizedBox(
-                height: 18,
-              ),
-            ],
-          ),
+    return charts.PieChart(
+      _createDataFromLatest(context, latest),
+      animate: animate,
+      defaultRenderer: charts.ArcRendererConfig(
+        arcWidth: 60,
+        arcRendererDecorators: [
+          charts.ArcLabelDecorator(),
         ],
       ),
     );
   }
 
-  double getPercent(int number, int sum) {
-    return (number / sum) * 100;
+  List<charts.Series<LinearSales, String>> _createDataFromLatest(
+      BuildContext context, Latest latest) {
+    final confirmed = S.of(context).confirmedTitle;
+    final deaths = S.of(context).deathsTitle;
+    final recovered = S.of(context).recoveredTitle;
+
+    Map<String, dynamic> colors = {
+      confirmed: charts.MaterialPalette.yellow.shadeDefault,
+      deaths: charts.MaterialPalette.red.shadeDefault,
+      recovered: charts.MaterialPalette.green.shadeDefault,
+    };
+
+    final data = [
+      LinearSales(confirmed, latest.confirmed),
+      LinearSales(deaths, latest.deaths),
+      LinearSales(recovered, latest.recovered),
+    ];
+
+    return [
+      charts.Series<LinearSales, String>(
+        id: 'Sales',
+        domainFn: (LinearSales sales, _) => sales.label,
+        measureFn: (LinearSales sales, _) => sales.sales,
+        data: data,
+        colorFn: (LinearSales sales, _) => colors[sales.label],
+        labelAccessorFn: (LinearSales row, _) => '${row.label}: ${row.sales}',
+      )
+    ];
   }
+}
+
+class LinearSales {
+  final String label;
+  final int sales;
+
+  LinearSales(this.label, this.sales);
 }

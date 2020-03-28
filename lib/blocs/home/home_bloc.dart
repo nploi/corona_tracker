@@ -15,7 +15,7 @@ part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final HomeRepository homeRepository;
-  final Set<Marker> markers = Set<Marker>();
+  final Set<Marker> markers = <Marker>{};
   LocationsResponse _locationsResponse;
   Location _location;
 
@@ -47,56 +47,61 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     try {
       _locationsResponse = await homeRepository.getLocations();
       markers.clear();
-
-      for (int index = 0;
-          _locationsResponse.locations != null &&
-              index < _locationsResponse.locations.length;
-          index++) {
-        var location = _locationsResponse.locations[index];
-
-        var color = Color(0xffFFA07A);
-
-        if (location.latest.confirmed > 10 &&
-            location.latest.confirmed <= 100) {
-          color = Color(0xffF08080);
-        } else if (location.latest.confirmed > 100 &&
-            location.latest.confirmed <= 1000) {
-          color = Color(0xffCD5C5C);
-        } else if (location.latest.confirmed > 1000 &&
-            location.latest.confirmed <= 10000) {
-          color = Color(0xffDC143C);
-        } else if (location.latest.confirmed > 10000 &&
-            location.latest.confirmed <= 50000) {
-          color = Color(0xffFF0000);
-        } else if (location.latest.confirmed > 50000) {
-          color = Color(0xff8B0000);
-        }
-
-        var icon = await getClusterMarker(
-          location.latest.confirmed,
-          color,
-          Colors.white,
-          max(150, location.latest.confirmed ~/ 150),
-        );
-        markers.add(
-          Marker(
-            markerId: MarkerId(location.id.toString()),
-            icon: icon,
-            anchor: Offset(0.5, 0.5),
-            onTap: () {
-              add(HomeLoadLocationEvent(location.id));
-            },
-            position: LatLng(
-              double.parse(location.coordinates.latitude),
-              double.parse(location.coordinates.longitude),
-            ),
-          ),
-        );
-      }
+      await makeMarkers();
       yield HomeLoadedLocationsState(_locationsResponse);
     } catch (exception) {
       yield HomeErrorState(exception.message);
     }
+  }
+
+  Future makeMarkers() async {
+    for (int index = 0;
+        _locationsResponse.locations != null &&
+            index < _locationsResponse.locations.length;
+        index++) {
+      var location = _locationsResponse.locations[index];
+
+      Color color = getColor(location.latest.confirmed);
+
+      var icon = await getClusterMarker(
+        location.latest.confirmed,
+        color,
+        Colors.white,
+        max(150, location.latest.confirmed ~/ 150),
+      );
+
+      markers.add(
+        Marker(
+          markerId: MarkerId(location.id.toString()),
+          icon: icon,
+          anchor: const Offset(0.5, 0.5),
+          onTap: () {
+            add(HomeLoadLocationEvent(location.id));
+          },
+          position: LatLng(
+            double.parse(location.coordinates.latitude),
+            double.parse(location.coordinates.longitude),
+          ),
+        ),
+      );
+    }
+  }
+
+  Color getColor(int number) {
+    var color = const Color(0xffFFA07A);
+
+    if (number > 10 && number <= 100) {
+      color = const Color(0xffF08080);
+    } else if (number > 100 && number <= 1000) {
+      color = const Color(0xffCD5C5C);
+    } else if (number > 1000 && number <= 10000) {
+      color = const Color(0xffDC143C);
+    } else if (number > 10000 && number <= 50000) {
+      color = const Color(0xffFF0000);
+    } else if (number > 50000) {
+      color = const Color(0xff8B0000);
+    }
+    return color;
   }
 
   Stream<HomeState> _handleHomeLoadLocationEvent(

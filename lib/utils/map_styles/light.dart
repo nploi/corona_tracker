@@ -1,4 +1,4 @@
-var mapStyleLight = """
+String mapStyleLight = """
  [
   {
     "featureType": "water",

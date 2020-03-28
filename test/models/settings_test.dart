@@ -7,7 +7,7 @@ void main() {
       Settings settings = Settings(languageCode: "vi");
       expect(settings.toJson(), {
         'language_code': 'vi',
-        'theme_mode': Settings.THEME_SYSTEM,
+        'theme_mode': Settings.themeSystem,
       });
     });
 

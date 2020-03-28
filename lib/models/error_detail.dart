@@ -12,10 +12,10 @@ class ErrorDetail {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['loc'] = this.loc;
-    data['msg'] = this.msg;
-    data['type'] = this.type;
+    final Map<String, dynamic> data = {};
+    data['loc'] = loc;
+    data['msg'] = msg;
+    data['type'] = type;
     return data;
   }
 }

@@ -12,7 +12,7 @@
 import 'package:intl/intl.dart';
 import 'package:intl/message_lookup_by_library.dart';
 
-final messages = new MessageLookup();
+final messages = MessageLookup();
 
 typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 
@@ -20,11 +20,11 @@ class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'vi';
 
   final messages = _notInlinedMessages(_notInlinedMessages);
-  static _notInlinedMessages(_) => <String, Function> {
-    "appName" : MessageLookupByLibrary.simpleMessage("Corona Tracker"),
-    "confirmedTitle" : MessageLookupByLibrary.simpleMessage("Lây nhiễm"),
-    "deathsTitle" : MessageLookupByLibrary.simpleMessage("Tử vong"),
-    "recoveredTitle" : MessageLookupByLibrary.simpleMessage("Phục hồi"),
-    "worldwide" : MessageLookupByLibrary.simpleMessage("Thế giới")
-  };
+  static _notInlinedMessages(_) => <String, Function>{
+        "appName": MessageLookupByLibrary.simpleMessage("Corona Tracker"),
+        "confirmedTitle": MessageLookupByLibrary.simpleMessage("Lây nhiễm"),
+        "deathsTitle": MessageLookupByLibrary.simpleMessage("Tử vong"),
+        "recoveredTitle": MessageLookupByLibrary.simpleMessage("Phục hồi"),
+        "worldwide": MessageLookupByLibrary.simpleMessage("Thế giới")
+      };
 }

@@ -6,7 +6,7 @@ class AppBlocDelegate extends BlocDelegate {
   Logger logger = Logger();
 
   AppBlocDelegate({this.debug = true});
-  @override	
+  @override
   void onEvent(Bloc bloc, Object event) {
     super.onEvent(bloc, event);
     if (debug) {

@@ -24,14 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
   final Completer<GoogleMapController> _controller = Completer();
   Location location;
 
-  final CameraPosition _cameraPosition = CameraPosition(
+  final CameraPosition _cameraPosition = const CameraPosition(
     target: LatLng(10.7622028, 106.6786009),
     zoom: 1,
   );
 
   @override
   void initState() {
-    BlocProvider.of<HomeBloc>(context).add(HomeLoadLocationsEvent());
+    BlocProvider.of<HomeBloc>(context).add(const HomeLoadLocationsEvent());
     BlocProvider.of<SettingsBloc>(context).listen((state) {
       if (state is SettingsUpdatedState) {
         if (!_controller.isCompleted) {
@@ -57,20 +57,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
           if (state is HomeLoadedLocationsState) {
             charts = [
-              CircleChart(
-                latest: response.latest,
+              Container(
+                height: 200,
+                child: DonutAutoLabelChart(state.response.latest),
               ),
             ];
           }
 
           if (state is HomeLoadedLocationState) {
             charts = [
-              CircleChart(
-                latest: state.location.latest,
+              Container(
+                height: 200,
+                child: DonutAutoLabelChart(state.location.latest),
               ),
-              TimeLineChart(
-                timeLines: state.location.timeLines,
-              )
+              const Divider(),
+              SizedBox(
+                height: 200,
+                child: DashPatternTimeLineChart(state.location.timeLines),
+              ),
             ];
           }
 
@@ -82,14 +86,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Padding(
                         padding: EdgeInsets.only(
                             top: MediaQuery.of(context).padding.top),
-                        child: LinearProgressIndicator(),
+                        child: const LinearProgressIndicator(),
                       ),
                     )
                   : Container(),
               Align(
                 alignment: Alignment.center,
                 child: SlidingUpPanel(
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),
                   ),
@@ -125,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             style: Theme.of(context).textTheme.title,
                           ),
                         ),
-                        Divider(),
+                        const Divider(),
                         buildExpanded(
                             controller,
                             isWorldwide ? response.latest : location.latest,
@@ -163,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
-          Divider(),
+          const Divider(),
         ]..addAll(charts),
       ),
     );
@@ -174,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Text(title),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(

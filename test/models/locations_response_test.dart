@@ -195,7 +195,8 @@ void main() {
         ]
       };
 
-      expect(LocationsResponse.fromJson(json).toJson(), locationsResponse.toJson());
+      expect(LocationsResponse.fromJson(json).toJson(),
+          locationsResponse.toJson());
     });
   });
 }

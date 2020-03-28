@@ -2,7 +2,7 @@ import 'package:corona_tracker/models/models.dart';
 import 'package:dio/dio.dart';
 
 class CoronaTrackerApi {
-  static const String URL = "https://coronavirus-tracker-api.herokuapp.com";
+  static const String url = "https://coronavirus-tracker-api.herokuapp.com";
   const CoronaTrackerApi();
 
   static bool debug = true;
@@ -17,7 +17,7 @@ class CoronaTrackerApi {
   Future<LocationsResponse> getLocations() async {
     try {
       var dio = makeDio();
-      var response = await dio.get(URL + "/v2/locations");
+      var response = await dio.get(url + "/v2/locations");
       dio.close();
       dio.clear();
       return LocationsResponse.fromJson(response.data);
@@ -30,7 +30,7 @@ class CoronaTrackerApi {
   Future<Location> getLocation({int id}) async {
     try {
       var dio = makeDio();
-      var response = await dio.get(URL + "/v2/locations/$id");
+      var response = await dio.get(url + "/v2/locations/$id");
       dio.close();
       dio.clear();
       if (response.data["location"] != null) {

@@ -12,10 +12,10 @@ class Latest {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['confirmed'] = this.confirmed;
-    data['deaths'] = this.deaths;
-    data['recovered'] = this.recovered;
+    final Map<String, dynamic> data = {};
+    data['confirmed'] = confirmed;
+    data['deaths'] = deaths;
+    data['recovered'] = recovered;
     return data;
   }
 }

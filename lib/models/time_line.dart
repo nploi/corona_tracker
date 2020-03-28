@@ -8,13 +8,12 @@ class TimeLine {
     latest = json['latest'];
     timeline = json['timeline'] != null ? json['timeline'] : null;
   }
-  
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['latest'] = this.latest;
-    if (this.timeline != null) {
-      data['timeline'] = this.timeline;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['latest'] = latest;
+    if (timeline != null) {
+      data['timeline'] = timeline;
     }
     return data;
   }
