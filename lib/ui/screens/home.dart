@@ -104,12 +104,12 @@ class _HomeScreenState extends State<HomeScreen> {
               bloc: _filteredBloc,
               builder: (context, filteredState) {
                 var markers = _filteredBloc.markers;
-                if (!isLoading && filteredState is FilteredLoadingState) {
-                  isLoading = true;
+                bool isFilteredLoading = false;
+
+                if (filteredState is FilteredLoadingState) {
+                  isFilteredLoading = true;
                 }
-                if (filteredState is FilteredLocationsState) {
-                  isLoading = false;
-                }
+
                 return Stack(
                   children: <Widget>[
                     Align(
@@ -135,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         panelBuilder: (controller) {
-                          if (isLoading) {
+                          if (isLoading || isFilteredLoading) {
                             return Container(
                               alignment: Alignment.topCenter,
                               padding: const EdgeInsets.only(top: 10),
