@@ -1,0 +1,1 @@
+enum Filtered { confirmed, deaths, recovered }

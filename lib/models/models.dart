@@ -1,6 +1,7 @@
 export 'coordinates.dart';
 export 'error.dart';
 export 'error_detail.dart';
+export 'filtered.dart';
 export 'latest.dart';
 export 'location.dart';
 export 'locations_response.dart';

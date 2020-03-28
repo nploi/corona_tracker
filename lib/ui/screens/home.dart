@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime currentBackPressTime;
   final Completer<GoogleMapController> _controller = Completer();
   Location location;
-
+  FilteredBloc _filteredBloc;
   final CameraPosition _cameraPosition = const CameraPosition(
     target: LatLng(10.7622028, 106.6786009),
     zoom: 1,
@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    _filteredBloc = FilteredBloc(homeBloc: BlocProvider.of<HomeBloc>(context));
     BlocProvider.of<HomeBloc>(context).add(const HomeLoadLocationsEvent());
     BlocProvider.of<SettingsBloc>(context).listen((state) {
       if (state is SettingsUpdatedState) {
@@ -49,7 +50,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: BlocBuilder<HomeBloc, HomeState>(
         builder: (context, state) {
-          var markers = BlocProvider.of<HomeBloc>(context).markers;
           var response = BlocProvider.of<HomeBloc>(context).locationsResponse;
           var location = BlocProvider.of<HomeBloc>(context).location;
           List<Widget> charts;
@@ -78,69 +78,79 @@ class _HomeScreenState extends State<HomeScreen> {
             ];
           }
 
-          return Stack(
-            children: <Widget>[
-              isLoading
-                  ? Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            top: MediaQuery.of(context).padding.top),
-                        child: const LinearProgressIndicator(),
-                      ),
-                    )
-                  : Container(),
-              Align(
-                alignment: Alignment.center,
-                child: SlidingUpPanel(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
-                  ),
-                  maxHeight: MediaQuery.of(context).size.height * 0.6,
-                  minHeight: MediaQuery.of(context).size.height * 0.2,
-                  body: GoogleMap(
-                    initialCameraPosition: _cameraPosition,
-                    markers: markers,
-                    myLocationEnabled: true,
-                    mapToolbarEnabled: false,
-                    compassEnabled: true,
-                    onMapCreated: _onMapCreated,
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).padding.top),
-                  ),
-                  panelBuilder: (controller) {
-                    if (isLoading) {
-                      return Container();
-                    }
-                    bool isWorldwide = location == null;
-                    return Column(
-                      children: <Widget>[
-                        Icon(Icons.remove),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            isWorldwide
-                                ? S.of(context).worldwide
-                                : location.country +
-                                    (location.province.isNotEmpty
-                                        ? " - ${location.province}"
-                                        : ""),
-                            style: Theme.of(context).textTheme.title,
-                          ),
+          return BlocBuilder<FilteredBloc, FilteredState>(
+              bloc: _filteredBloc,
+              builder: (context, filteredState) {
+                var markers = _filteredBloc.markers;
+                if (!isLoading && isLoading is FilteredLoadingState) {
+                  isLoading = true;
+                }
+                return Stack(
+                  children: <Widget>[
+                    isLoading
+                        ? Align(
+                            alignment: Alignment.topCenter,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: MediaQuery.of(context).padding.top),
+                              child: const LinearProgressIndicator(),
+                            ),
+                          )
+                        : Container(),
+                    Align(
+                      alignment: Alignment.center,
+                      child: SlidingUpPanel(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20),
                         ),
-                        const Divider(),
-                        buildExpanded(
-                            controller,
-                            isWorldwide ? response.latest : location.latest,
-                            charts),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          );
+                        maxHeight: MediaQuery.of(context).size.height * 0.6,
+                        minHeight: MediaQuery.of(context).size.height * 0.2,
+                        body: GoogleMap(
+                          initialCameraPosition: _cameraPosition,
+                          markers: markers,
+                          myLocationEnabled: true,
+                          mapToolbarEnabled: false,
+                          compassEnabled: true,
+                          onMapCreated: _onMapCreated,
+                          padding: EdgeInsets.only(
+                              top: MediaQuery.of(context).padding.top),
+                        ),
+                        panelBuilder: (controller) {
+                          if (isLoading) {
+                            return Container();
+                          }
+                          bool isWorldwide = location == null;
+                          return Column(
+                            children: <Widget>[
+                              Icon(Icons.remove),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  isWorldwide
+                                      ? S.of(context).worldwide
+                                      : location.country +
+                                          (location.province.isNotEmpty
+                                              ? " - ${location.province}"
+                                              : ""),
+                                  style: Theme.of(context).textTheme.title,
+                                ),
+                              ),
+                              const Divider(),
+                              buildExpanded(
+                                  controller,
+                                  isWorldwide
+                                      ? response.latest
+                                      : location.latest,
+                                  charts),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              });
         },
       ),
     );
@@ -158,11 +168,11 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                buildColumn(S.of(context).confirmedTitle, latest.confirmed,
+                buildColumn(S.of(context).confirmedTitle, latest?.confirmed,
                     Colors.yellow),
                 buildColumn(
-                    S.of(context).deathsTitle, latest.deaths, Colors.red),
-                buildColumn(S.of(context).recoveredTitle, latest.recovered,
+                    S.of(context).deathsTitle, latest?.deaths, Colors.red),
+                buildColumn(S.of(context).recoveredTitle, latest?.recovered,
                     Colors.green),
               ],
             ),
@@ -199,5 +209,11 @@ class _HomeScreenState extends State<HomeScreen> {
           .values[BlocProvider.of<SettingsBloc>(context).settings.themeMode]);
       _controller.future.then((controller) => controller.setMapStyle(style));
     }
+  }
+
+  @override
+  void dispose() {
+    _filteredBloc?.close();
+    super.dispose();
   }
 }
