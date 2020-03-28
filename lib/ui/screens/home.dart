@@ -104,21 +104,14 @@ class _HomeScreenState extends State<HomeScreen> {
               bloc: _filteredBloc,
               builder: (context, filteredState) {
                 var markers = _filteredBloc.markers;
-                if (!isLoading && isLoading is FilteredLoadingState) {
+                if (!isLoading && filteredState is FilteredLoadingState) {
                   isLoading = true;
+                }
+                if (filteredState is FilteredLocationsState) {
+                  isLoading = false;
                 }
                 return Stack(
                   children: <Widget>[
-                    isLoading
-                        ? Align(
-                            alignment: Alignment.topCenter,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: MediaQuery.of(context).padding.top),
-                              child: const LinearProgressIndicator(),
-                            ),
-                          )
-                        : Container(),
                     Align(
                       alignment: Alignment.center,
                       child: SlidingUpPanel(

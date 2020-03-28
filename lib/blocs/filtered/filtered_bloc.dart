@@ -16,7 +16,9 @@ part 'filtered_event.dart';
 part 'filtered_state.dart';
 
 class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
-  final Set<Marker> markers = <Marker>{};
+  final Set<Marker> _confirmedMarkers = <Marker>{};
+  final Set<Marker> _deathsMarkers = <Marker>{};
+  final Set<Marker> _recoveredMarkers = <Marker>{};
   Filtered _filtered = Filtered.confirmed;
 
   final FilteredRepository filteredRepository;
@@ -36,6 +38,18 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
 
   Filtered get filtered => _filtered;
 
+  Set<Marker> get markers {
+    switch (_filtered) {
+      case Filtered.confirmed:
+        return _confirmedMarkers;
+      case Filtered.deaths:
+        return _deathsMarkers;
+      case Filtered.recovered:
+        return _recoveredMarkers;
+    }
+    return {};
+  }
+
   @override
   FilteredState get initialState => FilteredInitState();
 
@@ -54,11 +68,38 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
     yield FilteredLoadingState();
     try {
       _filtered = event.filtered;
-      markers.clear();
-      markers.addAll(await makeMarkers(event.response.locations,
-          filtered: event.filtered, onPressed: (location) {
-        homeBloc.add(HomeLoadLocationEvent(location.id));
-      }));
+      switch (_filtered) {
+        case Filtered.confirmed:
+          if (_confirmedMarkers.isEmpty) {
+            var newMarkers = await makeMarkers(event.response.locations,
+                filtered: event.filtered, onPressed: (location) {
+              homeBloc.add(HomeLoadLocationEvent(location.id));
+            });
+            _confirmedMarkers.clear();
+            _confirmedMarkers.addAll(newMarkers);
+          }
+          break;
+        case Filtered.deaths:
+          if (_deathsMarkers.isEmpty) {
+            var newMarkers = await makeMarkers(event.response.locations,
+                filtered: event.filtered, onPressed: (location) {
+              homeBloc.add(HomeLoadLocationEvent(location.id));
+            });
+            _deathsMarkers.clear();
+            _deathsMarkers.addAll(newMarkers);
+          }
+          break;
+        case Filtered.recovered:
+          if (_recoveredMarkers.isEmpty) {
+            var newMarkers = await makeMarkers(event.response.locations,
+                filtered: event.filtered, onPressed: (location) {
+              homeBloc.add(HomeLoadLocationEvent(location.id));
+            });
+            _recoveredMarkers.clear();
+            _recoveredMarkers.addAll(newMarkers);
+          }
+          break;
+      }
       yield FilteredLocationsState(markers, _filtered);
     } catch (exception) {
       yield FilteredErrorState(exception.message);
