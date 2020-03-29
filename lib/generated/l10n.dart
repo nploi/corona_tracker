@@ -145,6 +145,15 @@ class S {
       args: [],
     );
   }
+
+  String get topAffectedCountries {
+    return Intl.message(
+      'Top affected countries',
+      name: 'topAffectedCountries',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

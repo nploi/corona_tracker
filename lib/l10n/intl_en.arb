@@ -11,5 +11,6 @@
   "languageTitle": "Language",
   "filterWithTitle": "Filter with",
   "activeTitle": "active",
-  "backAgainToLeaveMessage": "Tap back again to leave"
+  "backAgainToLeaveMessage": "Tap back again to leave",
+  "topAffectedCountries": "Top affected countries"
 }

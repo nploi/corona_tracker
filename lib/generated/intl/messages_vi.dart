@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onlineStatus" : MessageLookupByLibrary.simpleMessage("Đã kết nối mạng"),
     "recoveredTitle" : MessageLookupByLibrary.simpleMessage("Phục hồi"),
     "themeTitle" : MessageLookupByLibrary.simpleMessage("Giao diện"),
+    "topAffectedCountries" : MessageLookupByLibrary.simpleMessage("Các nước bị ảnh hưởng hàng đầu"),
     "worldwide" : MessageLookupByLibrary.simpleMessage("Thế giới")
   };
 }

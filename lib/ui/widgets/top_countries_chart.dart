@@ -1,6 +1,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:charts_flutter/flutter.dart';
 import 'package:corona_tracker/blocs/blocs.dart';
+import 'package:corona_tracker/generated/l10n.dart';
 import 'package:corona_tracker/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,16 +17,22 @@ class TopCountriesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return charts.BarChart(
-      _createDataFromLocations(context),
-      animate: animate,
-      behaviors: [
-        charts.SlidingViewport(),
-        charts.PanAndZoomBehavior(),
+    return Column(
+      children: <Widget>[
+        charts.BarChart(
+          _createDataFromLocations(context),
+          animate: animate,
+          behaviors: [
+            charts.SlidingViewport(),
+            charts.PanAndZoomBehavior(),
+          ],
+          domainAxis: charts.OrdinalAxisSpec(
+            viewport: charts.OrdinalViewport(locationsGroup[0].country, 4),
+          ),
+        ),
+        const SizedBox(height: 5),
+        Text(S.of(context).topAffectedCountries)
       ],
-      domainAxis: charts.OrdinalAxisSpec(
-        viewport: charts.OrdinalViewport(locationsGroup[0].country, 4),
-      ),
     );
   }
 

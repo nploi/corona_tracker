@@ -11,5 +11,6 @@
   "languageTitle": "Ngôn ngữ",
   "filterWithTitle": "Lộc với",
   "activeTitle": "Đang nhiễm",
-  "backAgainToLeaveMessage": "Bấm trở về lần nữa để thoát"
+  "backAgainToLeaveMessage": "Bấm trở về lần nữa để thoát",
+  "topAffectedCountries": "Các nước bị ảnh hưởng hàng đầu"
 }

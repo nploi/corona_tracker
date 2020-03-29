@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onlineStatus" : MessageLookupByLibrary.simpleMessage("Online"),
     "recoveredTitle" : MessageLookupByLibrary.simpleMessage("Recovered"),
     "themeTitle" : MessageLookupByLibrary.simpleMessage("Theme"),
+    "topAffectedCountries" : MessageLookupByLibrary.simpleMessage("Top affected countries"),
     "worldwide" : MessageLookupByLibrary.simpleMessage("Worldwide")
   };
 }

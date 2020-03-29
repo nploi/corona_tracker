@@ -72,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: DonutChart(response.latest),
                     ),
                   ),
+                  const Divider(),
                   Container(
                     height: ScreenUtil().setHeight(500),
                     child: Padding(
