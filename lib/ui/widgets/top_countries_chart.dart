@@ -19,15 +19,17 @@ class TopCountriesChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        charts.BarChart(
-          _createDataFromLocations(context),
-          animate: animate,
-          behaviors: [
-            charts.SlidingViewport(),
-            charts.PanAndZoomBehavior(),
-          ],
-          domainAxis: charts.OrdinalAxisSpec(
-            viewport: charts.OrdinalViewport(locationsGroup[0].country, 4),
+        Expanded(
+          child: charts.BarChart(
+            _createDataFromLocations(context),
+            animate: animate,
+            behaviors: [
+              charts.SlidingViewport(),
+              charts.PanAndZoomBehavior(),
+            ],
+            domainAxis: charts.OrdinalAxisSpec(
+              viewport: charts.OrdinalViewport(locationsGroup[0].country, 4),
+            ),
           ),
         ),
         const SizedBox(height: 5),
