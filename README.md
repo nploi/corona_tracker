@@ -1,4 +1,4 @@
-# corona_tracker
+# Corona Tracker
 
 Corona virus tracker app for IOS and Android.
 
