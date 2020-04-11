@@ -6,8 +6,6 @@ import 'package:corona_tracker/models/latest.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'indicator.dart';
-
 class DonutChart extends StatelessWidget {
   final Latest latest;
   final bool animate;
@@ -16,48 +14,23 @@ class DonutChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Expanded(
-          child: charts.PieChart(
-            _createDataFromLatest(context, latest),
-            animate: animate,
-            defaultRenderer: charts.ArcRendererConfig(
-              arcWidth: 60,
-              arcRendererDecorators: [
-                charts.ArcLabelDecorator(),
-              ],
-            ),
-          ),
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Indicator(
-              color: Colors.yellow,
-              text: S.of(context).activeTitle,
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            Indicator(
-              color: Colors.red,
-              text: S.of(context).deathsTitle,
-            ),
-            const SizedBox(
-              height: 4,
-            ),
-            Indicator(
-              color: Colors.green,
-              text: S.of(context).recoveredTitle,
-            ),
-            const SizedBox(
-              height: 18,
-            ),
-          ],
-        ),
+    return charts.PieChart(
+      _createDataFromLatest(context, latest),
+      animate: animate,
+      defaultRenderer: charts.ArcRendererConfig(
+        arcWidth: 60,
+        arcRendererDecorators: [
+          charts.ArcLabelDecorator(),
+        ],
+      ),
+      behaviors: [
+        charts.DatumLegend(
+          position: charts.BehaviorPosition.end,
+          outsideJustification: charts.OutsideJustification.middleDrawArea,
+          horizontalFirst: false,
+          desiredMaxRows: 3,
+          cellPadding: const EdgeInsets.only(right: 4.0, bottom: 4.0),
+        )
       ],
     );
   }

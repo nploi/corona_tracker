@@ -9,7 +9,7 @@ import 'intl/messages_all.dart';
 // **************************************************************************
 
 class S {
-  S(this.localeName);
+  S();
   
   static const AppLocalizationDelegate delegate =
     AppLocalizationDelegate();
@@ -19,15 +19,13 @@ class S {
     final String localeName = Intl.canonicalizedLocale(name);
     return initializeMessages(localeName).then((_) {
       Intl.defaultLocale = localeName;
-      return S(localeName);
+      return S();
     });
   } 
 
   static S of(BuildContext context) {
     return Localizations.of<S>(context, S);
   }
-
-  final String localeName;
 
   String get appName {
     return Intl.message(
@@ -130,10 +128,19 @@ class S {
 
   String get activeTitle {
     return Intl.message(
-      'active',
+      'Active',
       name: 'activeTitle',
       desc: '',
       args: [],
+    );
+  }
+
+  String lastUpdatedLabel(Object date) {
+    return Intl.message(
+      'Last updated: $date',
+      name: 'lastUpdatedLabel',
+      desc: '',
+      args: [date],
     );
   }
 
@@ -143,6 +150,24 @@ class S {
       name: 'backAgainToLeaveMessage',
       desc: '',
       args: [],
+    );
+  }
+
+  String get openSourceLicensesTitle {
+    return Intl.message(
+      'Open source licenses',
+      name: 'openSourceLicensesTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  String versionLabel(Object version) {
+    return Intl.message(
+      'Version $version',
+      name: 'versionLabel',
+      desc: '',
+      args: [version],
     );
   }
 

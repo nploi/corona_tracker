@@ -11,6 +11,9 @@
   "languageTitle": "Ngôn ngữ",
   "filterWithTitle": "Lộc với",
   "activeTitle": "Đang nhiễm",
+  "lastUpdatedLabel": "Cập nhật vào: {date}",
   "backAgainToLeaveMessage": "Bấm trở về lần nữa để thoát",
+  "openSourceLicensesTitle": "Giấy phép mã nguồn mở",
+  "versionLabel" : "Phiên bản {version}",
   "topAffectedCountries": "Các nước bị ảnh hưởng hàng đầu"
 }

@@ -1,9 +1,6 @@
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:corona_tracker/generated/l10n.dart';
 import 'package:corona_tracker/models/models.dart';
 import 'package:flutter/material.dart';
-
-import 'indicator.dart';
 
 class DashPatternTimeLineChart extends StatelessWidget {
   final TimeLines timeLines;
@@ -13,43 +10,27 @@ class DashPatternTimeLineChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: charts.TimeSeriesChart(
-            _createDataFromTimeLines(context, timeLines),
-            animate: animate,
-          ),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Indicator(
-              color: Colors.yellow,
-              text: S.of(context).confirmedTitle,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Indicator(
-              color: Colors.red,
-              text: S.of(context).deathsTitle,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Indicator(
-              color: Colors.green,
-              text: S.of(context).recoveredTitle,
-            ),
-          ],
-        ),
+    return charts.TimeSeriesChart(
+      _createDataFromTimeLines(context, timeLines),
+      animate: animate,
+      behaviors: [
+        charts.SeriesLegend(
+          position: charts.BehaviorPosition.bottom,
+          outsideJustification: charts.OutsideJustification.middleDrawArea,
+          horizontalFirst: false,
+          desiredMaxRows: 1,
+          cellPadding: const EdgeInsets.all(4.0),
+        )
       ],
+      primaryMeasureAxis: const charts.NumericAxisSpec(
+          showAxisLine: true,
+          tickProviderSpec: charts.BasicNumericTickProviderSpec(
+            desiredTickCount: 5,
+          ),
+          renderSpec: charts.GridlineRendererSpec(
+              lineStyle: charts.LineStyleSpec(
+            dashPattern: [4, 4],
+          ))),
     );
   }
 

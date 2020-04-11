@@ -10,7 +10,10 @@
   "dartModeTitle": "Dark mode",
   "languageTitle": "Language",
   "filterWithTitle": "Filter with",
-  "activeTitle": "active",
+  "activeTitle": "Active",
+  "lastUpdatedLabel": "Last updated: {date}",
   "backAgainToLeaveMessage": "Tap back again to leave",
+  "openSourceLicensesTitle": "Open source licenses",
+  "versionLabel" : "Version {version}",
   "topAffectedCountries": "Top affected countries"
 }

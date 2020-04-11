@@ -17,24 +17,30 @@ class TopCountriesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: charts.BarChart(
-            _createDataFromLocations(context),
-            animate: animate,
-            behaviors: [
-              charts.SlidingViewport(),
-              charts.PanAndZoomBehavior(),
-            ],
-            domainAxis: charts.OrdinalAxisSpec(
-              viewport: charts.OrdinalViewport(locationsGroup[0].country, 4),
-            ),
-          ),
+    return charts.BarChart(
+      _createDataFromLocations(context),
+      animate: animate,
+      behaviors: [
+        charts.SlidingViewport(),
+        charts.PanAndZoomBehavior(),
+        charts.ChartTitle(
+          S.of(context).topAffectedCountries,
+          behaviorPosition: charts.BehaviorPosition.bottom,
+          titleOutsideJustification: charts.OutsideJustification.middleDrawArea,
         ),
-        const SizedBox(height: 5),
-        Text(S.of(context).topAffectedCountries)
       ],
+      primaryMeasureAxis: const charts.NumericAxisSpec(
+
+          tickProviderSpec: charts.BasicNumericTickProviderSpec(
+            desiredTickCount: 4,
+          ),
+          renderSpec: charts.GridlineRendererSpec(
+              lineStyle: charts.LineStyleSpec(
+            dashPattern: [4, 4],
+          ))),
+      domainAxis: charts.OrdinalAxisSpec(
+        viewport: charts.OrdinalViewport(locationsGroup[0].country, 4),
+      ),
     );
   }
 

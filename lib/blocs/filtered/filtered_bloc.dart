@@ -2,7 +2,6 @@ import "dart:async";
 import 'dart:math';
 import "package:bloc/bloc.dart";
 import 'package:corona_tracker/blocs/home/home_bloc.dart';
-import 'package:corona_tracker/models/locations_response.dart';
 import 'package:corona_tracker/models/models.dart';
 import 'package:corona_tracker/ui/common/cluster_marker.dart';
 import 'package:equatable/equatable.dart';

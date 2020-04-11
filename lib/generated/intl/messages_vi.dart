@@ -19,6 +19,10 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'vi';
 
+  static m0(date) => "Cập nhật vào: ${date}";
+
+  static m1(version) => "Phiên bản ${version}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "activeTitle" : MessageLookupByLibrary.simpleMessage("Đang nhiễm"),
@@ -29,11 +33,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "deathsTitle" : MessageLookupByLibrary.simpleMessage("Tử vong"),
     "filterWithTitle" : MessageLookupByLibrary.simpleMessage("Lộc với"),
     "languageTitle" : MessageLookupByLibrary.simpleMessage("Ngôn ngữ"),
+    "lastUpdatedLabel" : m0,
     "offlineStatus" : MessageLookupByLibrary.simpleMessage("Chưa kết nối mạng"),
     "onlineStatus" : MessageLookupByLibrary.simpleMessage("Đã kết nối mạng"),
+    "openSourceLicensesTitle" : MessageLookupByLibrary.simpleMessage("Giấy phép mã nguồn mở"),
     "recoveredTitle" : MessageLookupByLibrary.simpleMessage("Phục hồi"),
     "themeTitle" : MessageLookupByLibrary.simpleMessage("Giao diện"),
     "topAffectedCountries" : MessageLookupByLibrary.simpleMessage("Các nước bị ảnh hưởng hàng đầu"),
+    "versionLabel" : m1,
     "worldwide" : MessageLookupByLibrary.simpleMessage("Thế giới")
   };
 }

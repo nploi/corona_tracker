@@ -1,2 +1,2 @@
-//export 'some_files.dart';
+export 'formatter.dart';
 export 'themes/themes.dart';

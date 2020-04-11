@@ -6,6 +6,7 @@ import 'package:corona_tracker/generated/l10n.dart';
 import 'package:corona_tracker/models/models.dart';
 import 'package:corona_tracker/ui/common/bottom_sheets.dart';
 import 'package:corona_tracker/ui/widgets/widgets.dart';
+import 'package:corona_tracker/utils/formatter.dart';
 import 'package:corona_tracker/utils/map_styles/map_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -60,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
               var location = BlocProvider.of<HomeBloc>(context).location;
               var locationsGroup =
                   BlocProvider.of<HomeBloc>(context).locationsGroup;
-              List<Widget> charts = [];
+              List<Widget> children = [];
               bool isLoading = state is HomeLoadingState;
 
               if (response != null && locationsGroup != null) {
-                charts = [
+                children = [
                   Container(
                     height: ScreenUtil().setHeight(500),
                     child: Padding(
@@ -87,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }
 
               if (location != null) {
-                charts = [
+                children = [
                   Container(
                     height: ScreenUtil().setHeight(500),
                     child: Padding(
@@ -103,6 +104,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: DashPatternTimeLineChart(location.timeLines),
                     ),
                   ),
+                  const Divider(),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Center(
+                      child: Text(S.of(context).lastUpdatedLabel(
+                          FormatterUtils.formatDateFromString(
+                              location.lastUpdated))),
+                    ),
+                  )
                 ];
               }
 
@@ -127,6 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               topRight: Radius.circular(10),
                             ),
                             minHeight: ScreenUtil().setHeight(400),
+                            maxHeight: ScreenUtil().setHeight(1500),
                             body: GoogleMap(
                               initialCameraPosition: _cameraPosition,
                               markers: markers,
@@ -142,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             panelBuilder: (controller) {
                               return buildCard(isLoading, isFilteredLoading,
-                                  location, controller, response, charts);
+                                  location, controller, response, children);
                             },
                           ),
                         ),
@@ -176,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Location location,
       ScrollController controller,
       LocationsResponse response,
-      List<Widget> charts) {
+      List<Widget> children) {
     if (isLoading || isFilteredLoading) {
       return Container(
         alignment: Alignment.topCenter,
@@ -221,7 +232,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         const Divider(),
         buildExpanded(controller,
-            isWorldwide ? response.latest : location.latest, charts),
+            isWorldwide ? response.latest : location.latest, children),
       ],
     );
   }

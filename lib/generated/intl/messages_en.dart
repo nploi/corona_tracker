@@ -19,9 +19,13 @@ typedef String MessageIfAbsent(String messageStr, List<dynamic> args);
 class MessageLookup extends MessageLookupByLibrary {
   String get localeName => 'en';
 
+  static m0(date) => "Last updated: ${date}";
+
+  static m1(version) => "Version ${version}";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
-    "activeTitle" : MessageLookupByLibrary.simpleMessage("active"),
+    "activeTitle" : MessageLookupByLibrary.simpleMessage("Active"),
     "appName" : MessageLookupByLibrary.simpleMessage("Corona Tracker"),
     "backAgainToLeaveMessage" : MessageLookupByLibrary.simpleMessage("Tap back again to leave"),
     "confirmedTitle" : MessageLookupByLibrary.simpleMessage("Confirmed"),
@@ -29,11 +33,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "deathsTitle" : MessageLookupByLibrary.simpleMessage("Deaths"),
     "filterWithTitle" : MessageLookupByLibrary.simpleMessage("Filter with"),
     "languageTitle" : MessageLookupByLibrary.simpleMessage("Language"),
+    "lastUpdatedLabel" : m0,
     "offlineStatus" : MessageLookupByLibrary.simpleMessage("Offline"),
     "onlineStatus" : MessageLookupByLibrary.simpleMessage("Online"),
+    "openSourceLicensesTitle" : MessageLookupByLibrary.simpleMessage("Open source licenses"),
     "recoveredTitle" : MessageLookupByLibrary.simpleMessage("Recovered"),
     "themeTitle" : MessageLookupByLibrary.simpleMessage("Theme"),
     "topAffectedCountries" : MessageLookupByLibrary.simpleMessage("Top affected countries"),
+    "versionLabel" : m1,
     "worldwide" : MessageLookupByLibrary.simpleMessage("Worldwide")
   };
 }
