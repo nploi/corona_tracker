@@ -8,15 +8,15 @@ abstract class FilteredEvent extends Equatable {
 }
 
 class FilteredLocationsEvent extends FilteredEvent {
-  final LocationsResponse response;
+  final List<Location> locations;
   final Filtered filtered;
-  const FilteredLocationsEvent(this.response,
+  const FilteredLocationsEvent(this.locations,
       {this.filtered = Filtered.confirmed});
 
   @override
-  List<Object> get props => [response, filtered];
+  List<Object> get props => [locations, filtered];
 
   @override
-  String toString() => "FilteredLocationsEvent {response: ${response.toJson()},"
+  String toString() => "FilteredLocationsEvent {locations: $locations,"
       " filtered: $filtered}";
 }

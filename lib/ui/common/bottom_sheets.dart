@@ -34,21 +34,27 @@ void showFilterWithModalBottomSheet(BuildContext context, Filtered current,
   });
   showModalBottomSheet(
       context: context,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(10),
+        topRight: Radius.circular(10),
+      )),
       builder: (BuildContext context) {
-        return Material(
-          child: Wrap(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(S.of(context).filterWithTitle),
+        return Wrap(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: Text(
+                  S.of(context).filterWithTitle,
+                  style: Theme.of(context).textTheme.title,
                 ),
               ),
-              const Divider(
-                height: 1,
-              ),
-            ]..addAll(widgets),
-          ),
+            ),
+            const Divider(
+              height: 1,
+            ),
+          ]..addAll(widgets),
         );
       });
 }

@@ -11,8 +11,8 @@ class LocationsResponse {
     latest = json['latest'] != null ? Latest.fromJson(json['latest']) : null;
     if (json['locations'] != null) {
       locations = <Location>[];
-      json['locations'].forEach((v) {
-        locations.add(Location.fromJson(v));
+      json['locations'].forEach((location) {
+        locations.add(Location.fromJson(location));
       });
     }
   }
@@ -23,7 +23,8 @@ class LocationsResponse {
       data['latest'] = latest.toJson();
     }
     if (locations != null) {
-      data['locations'] = locations.map((v) => v.toJson()).toList();
+      data['locations'] =
+          locations.map((location) => location.toJson()).toList();
     }
     return data;
   }

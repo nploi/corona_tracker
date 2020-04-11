@@ -20,7 +20,6 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
   final Set<Marker> _deathsMarkers = <Marker>{};
   final Set<Marker> _recoveredMarkers = <Marker>{};
   Filtered _filtered = Filtered.confirmed;
-
   final FilteredRepository filteredRepository;
   HomeBloc homeBloc;
   StreamSubscription homeStreamSubscription;
@@ -30,7 +29,8 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
     if (homeBloc != null) {
       homeStreamSubscription = homeBloc.listen((state) {
         if (state is HomeLoadedLocationsState) {
-          add(FilteredLocationsEvent(state.response, filtered: _filtered));
+          add(FilteredLocationsEvent(state.response.locations,
+              filtered: _filtered));
         }
       });
     }
@@ -71,7 +71,7 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
       switch (_filtered) {
         case Filtered.confirmed:
           if (_confirmedMarkers.isEmpty) {
-            var newMarkers = await makeMarkers(event.response.locations,
+            var newMarkers = await makeMarkers(event.locations,
                 filtered: event.filtered, onPressed: (location) {
               homeBloc.add(HomeLoadLocationEvent(location.id));
             });
@@ -81,7 +81,7 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
           break;
         case Filtered.deaths:
           if (_deathsMarkers.isEmpty) {
-            var newMarkers = await makeMarkers(event.response.locations,
+            var newMarkers = await makeMarkers(event.locations,
                 filtered: event.filtered, onPressed: (location) {
               homeBloc.add(HomeLoadLocationEvent(location.id));
             });
@@ -91,7 +91,7 @@ class FilteredBloc extends Bloc<FilteredEvent, FilteredState> {
           break;
         case Filtered.recovered:
           if (_recoveredMarkers.isEmpty) {
-            var newMarkers = await makeMarkers(event.response.locations,
+            var newMarkers = await makeMarkers(event.locations,
                 filtered: event.filtered, onPressed: (location) {
               homeBloc.add(HomeLoadLocationEvent(location.id));
             });

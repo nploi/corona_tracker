@@ -123,8 +123,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SlidingUpPanel(
                             color: Theme.of(context).scaffoldBackgroundColor,
                             borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
+                              topLeft: Radius.circular(10),
+                              topRight: Radius.circular(10),
                             ),
                             minHeight: ScreenUtil().setHeight(400),
                             body: GoogleMap(
@@ -273,25 +273,34 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildFilterButton(LocationsResponse locationsResponse) {
-    return Builder(
-        builder: (context) => IconButton(
-            icon: Icon(Icons.filter_list),
-            onPressed: () {
-              showFilterWithModalBottomSheet(context, _filteredBloc.filtered,
-                  onSelected: (filtered) {
-                _filteredBloc.add(FilteredLocationsEvent(locationsResponse,
-                    filtered: filtered));
-              });
-            }));
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CircleButton(
+        onPressed: () {
+          showFilterWithModalBottomSheet(context, _filteredBloc.filtered,
+              onSelected: (filtered) {
+            _filteredBloc.add(FilteredLocationsEvent(
+                locationsResponse.locations,
+                filtered: filtered));
+          });
+        },
+        icon: Icon(Icons.filter_list),
+      ),
+    );
   }
 
   Widget buildDrawerButton() {
-    return Builder(
-        builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            }));
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Builder(builder: (context) {
+        return CircleButton(
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+          icon: Icon(Icons.menu),
+        );
+      }),
+    );
   }
 
   void _onMapCreated(GoogleMapController controller) {

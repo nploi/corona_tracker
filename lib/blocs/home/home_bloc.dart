@@ -26,7 +26,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<Location> locations = [];
     _locationsGroup.entries.toList().forEach((entry) {
       var location = Location(country: entry.key, latest: entry.value);
-      locations.add(location);
+      locations.add(Location.fromJson(location.toJson()));
     });
     locations.sort((a, b) {
       if (a.latest.confirmed > b.latest.confirmed) {
@@ -75,7 +75,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     }
     _locationsResponse.locations.forEach((location) {
       if (!_locationsGroup.containsKey(location.country)) {
-        _locationsGroup[location.country] = location.latest;
+        _locationsGroup[location.country] =
+            Latest.fromJson(location.latest.toJson());
       } else {
         _locationsGroup[location.country].confirmed +=
             location.latest.confirmed;

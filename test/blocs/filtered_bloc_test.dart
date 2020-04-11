@@ -12,14 +12,14 @@ void main() {
   FilteredBloc filteredBloc;
   MockFilteredRepository filteredRepository;
 
-  LocationsResponse locationsResponse;
+  List<Location> locations;
 
   Set<Marker> markers = {};
 
   setUp(() async {
     filteredRepository = MockFilteredRepository();
     filteredBloc = FilteredBloc(filteredRepository: filteredRepository);
-    locationsResponse = LocationsResponse(locations: <Location>[]);
+    locations = [];
   });
 
   tearDown(() {
@@ -34,8 +34,8 @@ void main() {
         return filteredBloc;
       },
       act: (bloc) async {
-        bloc.add(FilteredLocationsEvent(locationsResponse,
-            filtered: Filtered.confirmed));
+        bloc.add(
+            FilteredLocationsEvent(locations, filtered: Filtered.confirmed));
       },
       expect: [
         FilteredLoadingState(),
