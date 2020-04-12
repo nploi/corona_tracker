@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:corona_tracker/generated/l10n.dart';
 import 'package:corona_tracker/models/models.dart';
 import 'package:flutter/material.dart';
 
@@ -53,17 +54,17 @@ class DashPatternTimeLineChart extends StatelessWidget {
 
     return [
       buildSeries(
-        id: "Confirmed",
+        id: S.of(context).confirmedTitle,
         color: charts.MaterialPalette.yellow.shadeDefault,
         data: confirmedData,
       ),
       buildSeries(
-        id: "Deaths",
+        id: S.of(context).deathsTitle,
         color: charts.MaterialPalette.red.shadeDefault,
         data: deathsData,
       ),
       buildSeries(
-        id: "Recovered",
+        id: S.of(context).recoveredTitle,
         color: charts.MaterialPalette.green.shadeDefault,
         data: recoveredData,
       ),

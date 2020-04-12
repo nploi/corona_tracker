@@ -58,7 +58,6 @@ class TopCountriesChart extends StatelessWidget {
         domainFn: (OrdinalSales sales, _) => sales.country,
         measureFn: (OrdinalSales sales, _) => sales.sales,
         data: data,
-        labelAccessorFn: (OrdinalSales sales, _) => "111111",
         outsideLabelStyleAccessorFn: (OrdinalSales sales, _) {
           var color = charts.MaterialPalette.black;
           if (settings.isDarkMode()) {
